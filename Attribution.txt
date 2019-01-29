@@ -1,0 +1,6 @@
+This project contains the following attributable resources:
+
+NES Cyrillic font by MegaZet - under the CC BY-NC-SA 3.0 license - https://creativecommons.org/licenses/by-nc-sa/3.0/
+Other fonts are licensed under the SIL Open Font License (included)
+
+MapBodyBuilder.java class by Sion Dream - https://gamedev.stackexchange.com/questions/66924/how-can-i-convert-a-tilemap-to-a-box2d-world
