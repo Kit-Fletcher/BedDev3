@@ -64,7 +64,7 @@ public class Enemy extends Entity {
 		this.player = level.getPlayer();
 		
 		//Initialise timer values
-		noiseTimer = 300;
+		setNoiseTimer(300);
 		wanderTimer = 100;
 		alertTimer = -1;
 		//Initialise variable which affects speed depending on alert status
@@ -79,8 +79,8 @@ public class Enemy extends Entity {
 		angleToPlayerRadians = Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
 			     new Vector2(player.getPositionX(), player.getPositionY()));
 		
-		distanceToPlayer = Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
-				new Vector2(player.getPositionX(), player.getPositionY()));	
+		setDistanceToPlayer(Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
+				new Vector2(player.getPositionX(), player.getPositionY())));	
 		
 		if(alertTimer <= 0) {
 			//Wandering state
@@ -98,7 +98,7 @@ public class Enemy extends Entity {
 			alertTimer --;
 		}
 		
-		int noise = (int)((double) level.getPlayer().getNoise()/(distanceToPlayer+1));
+		int noise = (int)((double) level.getPlayer().getNoise()/(getDistanceToPlayer()+1));
 		if(noise>=3||isPlayerInSight()) {
 			//If player detected, increase movement speed and set time alerted for
 			alertTimer = noise*100;
@@ -121,20 +121,20 @@ public class Enemy extends Entity {
 	 */
 	private boolean isPlayerInSight() {				
 		return (Math.abs(angleDegrees-Math.toDegrees(angleRadians))<40) &&
-				(distanceToPlayer < 200 || (inLights && distanceToPlayer < 1000));
+				(getDistanceToPlayer() < 200 || (inLights && getDistanceToPlayer() < 1000));
 	}
 	
 	/**
 	 * Method to update zombie sound effects timer
 	 */
-	private void noiseStep() {
-		noiseTimer--;
+	public void noiseStep() {
+		setNoiseTimer(getNoiseTimer() - 1);
 		//If timer reaches zero...
-		if(noiseTimer <= 0) {
-			noiseTimer = Zombies.random.nextInt(1000) + 500;
+		if(getNoiseTimer() <= 0) {
+			setNoiseTimer(Zombies.random.nextInt(1000) + 500);
 			//Play a random sound, adjusting volume based on distance to player
 			Zombies.soundArrayZombie[1+Zombies.random.nextInt(Zombies.soundArrayZombie.length-1)]
-					.play(distanceToPlayer < 500 ? 500-(float)distanceToPlayer : 0);
+					.play(getDistanceToPlayer() < 500 ? 500-(float)getDistanceToPlayer() : 0);
 		}
 	}
 
@@ -168,5 +168,21 @@ public class Enemy extends Entity {
 		//Remove enemy if health below zero
 		if(health <= 0)					
 			getInfo().flagForDeletion();
+	}
+
+	public int getNoiseTimer() {
+		return noiseTimer;
+	}
+
+	public void setNoiseTimer(int noiseTimer) {
+		this.noiseTimer = noiseTimer;
+	}
+
+	public double getDistanceToPlayer() {
+		return distanceToPlayer;
+	}
+
+	public void setDistanceToPlayer(double distanceToPlayer) {
+		this.distanceToPlayer = distanceToPlayer;
 	}
 }
