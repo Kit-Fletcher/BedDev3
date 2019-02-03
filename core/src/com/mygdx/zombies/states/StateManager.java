@@ -12,7 +12,7 @@ public class StateManager {
 	
 	//Enum of state ids, used to identify different types of state
 	public static enum StateID {
-		MAINMENU, CREDITSMENU, OPTIONSMENU, ENDSCREEN, BRIEFINGSCREEN,
+		MAINMENU, CREDITSMENU, OPTIONSMENU, ENDSCREEN, BRIEFINGSCREEN, MINIGAME,
 		PLAYERSELECTMENU, STAGE1, STAGE2, STAGE3, TESTSTAGE1, TESTSTAGE2
 	}
 
@@ -92,6 +92,10 @@ public class StateManager {
 				break;
 			case STAGE3:
 				tempState = new Level("World_Three", entryID);
+				break;
+			case MINIGAME:
+				System.out.println("entering minigame state");
+				tempState = new Minigame();
 				break;
 			default:
 				System.err.println("Error: Unrecognised gate destination");

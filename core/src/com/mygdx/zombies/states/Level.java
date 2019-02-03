@@ -156,6 +156,7 @@ public class Level extends State {
 			int width = ((Float) p.get("width")).intValue();
 			int height = ((Float) p.get("height")).intValue();
 			String destination = (String) p.get("Destination");
+			//System.out.println(destination);
 			int entryID = (Integer) p.get("EntryID");
 			
 			//Scale coordinates
