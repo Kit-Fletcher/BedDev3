@@ -95,7 +95,7 @@ public class StateManager {
 				break;
 			case MINIGAME:
 				System.out.println("entering minigame state");
-				tempState = new Minigame();
+				tempState = new Minigame("World_One_Minigame");
 				break;
 			default:
 				System.err.println("Error: Unrecognised gate destination");
