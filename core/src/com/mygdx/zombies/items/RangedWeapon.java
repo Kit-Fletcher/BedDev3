@@ -2,6 +2,7 @@ package com.mygdx.zombies.items;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.zombies.Turret;
 import com.mygdx.zombies.states.Level;
 
 /**
@@ -9,13 +10,13 @@ import com.mygdx.zombies.states.Level;
  */
 public class RangedWeapon implements Weapon {
 
-	private int shootDelay;
-	private int timerTicks;
-	private Level level;
-	private String projectileSpritePath;
-	private Sound shootSound;
-	private float bulletSpeed;
-	private static boolean firing;
+	protected int shootDelay;
+	protected int timerTicks;
+	protected Level level;
+	protected String projectileSpritePath;
+	protected Sound shootSound;
+	protected float bulletSpeed;
+	protected static boolean firing;
 	
 	/**
 	 * Constructor for the ranged weapon
@@ -63,7 +64,19 @@ public class RangedWeapon implements Weapon {
 			shootSound.play();
 		}
 	}
-	
+	/**
+	 * Fires a projectile for the turret, if weapon is loaded
+	 * @param turret The firing turret
+	 */
+	public void use(Turret turret) {
+		if(timerTicks == 0) {
+			timerTicks++;
+			level.getBulletsList().add(new Projectile(level, (int)turret.getPositionX(), (int)turret.getPositionY(),
+					(float)(turret.getAngleRadians() + Math.PI ), projectileSpritePath, bulletSpeed));
+			firing = true;
+			shootSound.play();
+		}
+	}
 	/**
 	 * Method to update shoot timer
 	 */
