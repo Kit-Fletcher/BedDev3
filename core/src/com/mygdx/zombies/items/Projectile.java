@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.zombies.Entity;
 import com.mygdx.zombies.InfoContainer;
 import com.mygdx.zombies.Zombies;
@@ -17,6 +18,7 @@ public class Projectile extends Entity {
 
 	private SpriteBatch spriteBatch;
 	private Sprite sprite;
+	private World world;
 
 	/**
 	 * Constructor for the projectile
@@ -27,13 +29,14 @@ public class Projectile extends Entity {
 	 * @param spritePath - the file name of the sprite to use
 	 * @param speed - the speed that the projectile moves
 	 */
-	public Projectile(Level level, int x, int y, float angle, String spritePath, float speed) {
+	public Projectile(SpriteBatch worldBatch, World box2DWorld, int x, int y, float angle, String spritePath, float speed) {
 		
 		//Apply bullet spray
 		angle += Zombies.random.nextFloat()*0.2f-0.1f;
 		
 		//Add sprite
-		this.spriteBatch = level.getWorldBatch();
+		this.spriteBatch = worldBatch;
+		this.world = box2DWorld;
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
 		sprite.setRotation((float)Math.toDegrees(angle));
 
@@ -47,7 +50,7 @@ public class Projectile extends Entity {
 				isSensor = true;
 			}
 		};
-		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, InfoContainer.BodyID.PROJECTILE, fixtureDef);
+		GenerateBodyFromSprite(world, sprite, InfoContainer.BodyID.PROJECTILE, fixtureDef);
 		body.setTransform(x / Zombies.PhysicsDensity, y / Zombies.PhysicsDensity, angle);
 		body.setBullet(true);
 		body.setFixedRotation(true);
