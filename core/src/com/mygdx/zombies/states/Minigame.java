@@ -15,13 +15,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.zombies.Boss1;
 import com.mygdx.zombies.CustomContactListener;
 import com.mygdx.zombies.Enemy;
 import com.mygdx.zombies.Entity;
 import com.mygdx.zombies.Gate;
+import com.mygdx.zombies.InfoContainer;
 import com.mygdx.zombies.NPC;
 import com.mygdx.zombies.PickUp;
+import com.mygdx.zombies.Player;
+import com.mygdx.zombies.Turret;
 import com.mygdx.zombies.Zombies;
+import com.mygdx.zombies.MinigameZombie;
+import com.mygdx.zombies.items.MeleeWeapon;
+import com.mygdx.zombies.items.PowerUp;
 import com.mygdx.zombies.items.Projectile;
 import com.mygdx.zombies.items.RangedWeapon;
 
@@ -30,8 +37,9 @@ import box2dLight.RayHandler;
 
 public class Minigame extends State {
 
-	private ArrayList<Enemy> enemiesList;
+	private ArrayList<MinigameZombie> enemiesList;
 	private ArrayList<Projectile> bulletsList;
+	private ArrayList<Turret> turretList;
 	private World box2dWorld;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
@@ -49,11 +57,11 @@ public class Minigame extends State {
 	 */
 	public Minigame(String path) {
 		super();
-		
+		box2dWorld = new World(new Vector2(0, 0), true);
 		this.path = path;
 		
 		bulletsList = new ArrayList<Projectile>();
-		enemiesList = new ArrayList<Enemy>();
+		enemiesList = new ArrayList<MinigameZombie>();
 		
 		String mapFile = String.format("stages/%s.tmx", path);
 		map = new TmxMapLoader().load(mapFile);
@@ -65,13 +73,57 @@ public class Minigame extends State {
 		MapBodyBuilder.buildShapes(map, Zombies.PhysicsDensity / Zombies.WorldScale, box2dWorld);
 						
 		initLights();			
-								
+		loadObjects();
+		
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		box2dWorld.setContactListener(new CustomContactListener());
 		
 	}
+	/**
+	 * Method to parse map objects, such as power ups, weapons, enemies and NPCs
+	 */
+	private void loadObjects() {
+		
+		//Get objects layer
+		MapObjects objects = map.getLayers().get("Objects").getObjects();
+		//turretList.add(new Turret(this,(int) (723* Zombies.WorldScale),(int)( 819*Zombies.WorldScale) ,"minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot));
+		//Iterate objects
+		for(MapObject object : objects) {
+			
+			//Retrieve properties
+			MapProperties p = object.getProperties();
+			int x = ((Float) p.get("x")).intValue();
+			int y = ((Float) p.get("y")).intValue();
+			
+			//Scale coordinates
+			x*= Zombies.WorldScale;
+			y*= Zombies.WorldScale;
 
+			//Added the object, using the name as an identifier
+			switch(object.getName()) {
+				case "zombie1":
+					
+					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie1.png", 6, 5));
+				break;
+				
+				case "zombie2":
+					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie2.png", 5, 15));
+				break;
+				
+				case "zombie3":
+					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie3.png", 10, 5));
+				break;
+				case "turret1":
+					
+					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot));
+				break;
+				default:
+					System.err.println("Error importing stage: unrecognised object");
+				break;
+			}
+		}
+	}
 	private void initLights() {
 		
 		//Set up rayhandler
@@ -144,8 +196,10 @@ public class Minigame extends State {
 		worldBatch.setProjectionMatrix(camera.combined);
 		worldBatch.begin();							
 		//Draw mobs and game objects
+		System.out.println(enemiesList);
 		for (int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).render();
+		
 		for (Projectile bullet : bulletsList)
 			bullet.render();
 		worldBatch.end();
