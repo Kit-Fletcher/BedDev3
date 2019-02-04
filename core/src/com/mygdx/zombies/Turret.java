@@ -56,6 +56,7 @@ public class Turret extends Entity{
 		//add the turrets gun
 		
 		this.projectilePath= projectileSpritePath;
+		this.shootDelay = shootDelay;
 		this.bulletSpeed = bulletSpeed;
 		this.sound =shootSound;
 		//Add box2d body
@@ -77,6 +78,7 @@ public class Turret extends Entity{
 		this.level = level;
 		this.enemiesList = level.getEnemiesList();
 		
+		
 		//Initialise timer values
 		//Initialise variable which affects speed depending on alert status
 		sprite.setRotation((float) angleDegrees);		
@@ -90,7 +92,7 @@ public class Turret extends Entity{
 			angleDegrees = (double)Math.toDegrees(angleToZombieRadians); 
 			sprite.setRotation((float) angleDegrees);	
 			this.use(this);
-			gun.update(getPositionX(),getPositionY(), (float) angleDegrees);
+			//gun.update(getPositionX(),getPositionY(), (float) angleDegrees);
 			sprite.setRotation((float) angleDegrees);
 		}
 		if(timerTicks > 0)

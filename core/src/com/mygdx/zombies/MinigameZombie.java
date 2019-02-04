@@ -54,7 +54,7 @@ public class MinigameZombie extends Entity {
 				restitution = 1f;
 			}
 		};
-		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, InfoContainer.BodyID.ZOMBIE, fixtureDef);
+		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, InfoContainer.BodyID.MINIZOMBIE, fixtureDef);
 		body.setTransform(x / Zombies.PhysicsDensity, y / Zombies.PhysicsDensity, 0);
 		body.setLinearDamping(4);
 		body.setFixedRotation(true);
@@ -71,6 +71,7 @@ public class MinigameZombie extends Entity {
 		//Initialise variable which affects speed depending on alert status
 		alertSpeed = 0.2f;
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
+		box2dWorld.setContactListener(new CustomContactListener());
 	}
 
 	/**

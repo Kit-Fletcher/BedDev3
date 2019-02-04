@@ -62,7 +62,7 @@ public class Minigame extends State {
 		
 		bulletsList = new ArrayList<Projectile>();
 		enemiesList = new ArrayList<MinigameZombie>();
-		
+		turretList = new ArrayList<Turret>();
 		String mapFile = String.format("stages/%s.tmx", path);
 		map = new TmxMapLoader().load(mapFile);
 		renderer = new OrthogonalTiledMapRenderer(map, Zombies.WorldScale);
@@ -196,12 +196,14 @@ public class Minigame extends State {
 		worldBatch.setProjectionMatrix(camera.combined);
 		worldBatch.begin();							
 		//Draw mobs and game objects
-		System.out.println(enemiesList);
+		
 		for (int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).render();
 		
 		for (Projectile bullet : bulletsList)
 			bullet.render();
+		for (Turret turret : turretList)
+			turret.render();
 		worldBatch.end();
 		
 		//Render lighting
@@ -236,7 +238,8 @@ public class Minigame extends State {
 		//Update mobs
 		for(int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).update(this.inLights());			
-
+		for (Turret turret : turretList)
+			turret.update();
 		
 		//Remove deletion flagged objects
 		Entity.removeDeletionFlagged(enemiesList);
