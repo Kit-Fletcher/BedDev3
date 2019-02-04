@@ -1396,7 +1396,7 @@
  </objectgroup>
  <objectgroup id="40" name="Entries"/>
  <objectgroup id="41" name="Objects">
-  <object id="79" name="zombie" x="448" y="544">
+  <object id="79" name="zombie1" x="448" y="544">
    <point/>
   </object>
  </objectgroup>
