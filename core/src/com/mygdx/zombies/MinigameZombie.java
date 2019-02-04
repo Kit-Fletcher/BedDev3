@@ -62,7 +62,7 @@ public class MinigameZombie extends Entity {
 		this.level = level;
 		this.speed = speed;
 		this.health = health;	
-		this.player = level.getPlayer();
+		//this.player = level.getPlayer();
 		
 		//Initialise timer values
 		noiseTimer = 300;

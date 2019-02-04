@@ -270,10 +270,21 @@ public class Minigame extends State {
 		//box2DDebugRenderer.dispose();
 	}
 	
+	public World getBox2dWorld() {
+		return box2dWorld;
+	}
+	
+	public ArrayList<MinigameZombie> getEnemiesList() {
+		return enemiesList;
+	}
+	
 	private void spawnZombies() {
 		for(int i = 0; i < WaveCount; i++) {
 			//spawn zombie
 		}
+	}
+	public ArrayList<Projectile> getBulletsList() {
+		return bulletsList;
 	}
 }
 

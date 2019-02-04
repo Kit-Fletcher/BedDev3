@@ -58,25 +58,25 @@ public class RangedWeapon implements Weapon {
 		if(timerTicks == 0) {
 			timerTicks++;
 			Vector2 pos = level.getPlayer().getHandsPosition();
-			level.getBulletsList().add(new Projectile(level, (int)pos.x + level.getPlayer().getPositionX(), (int)pos.y + level.getPlayer().getPositionY(),
+			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)pos.x + level.getPlayer().getPositionX(), (int)pos.y + level.getPlayer().getPositionY(),
 					(float)(level.getPlayer().getAngleRadians() + Math.PI/2), projectileSpritePath, bulletSpeed));
 			firing = true;
 			shootSound.play();
 		}
 	}
-	/**
-	 * Fires a projectile for the turret, if weapon is loaded
-	 * @param turret The firing turret
-	 */
-	public void use(Turret turret) {
-		if(timerTicks == 0) {
-			timerTicks++;
-			level.getBulletsList().add(new Projectile(level, (int)turret.getPositionX(), (int)turret.getPositionY(),
-					(float)(turret.getAngleRadians() + Math.PI ), projectileSpritePath, bulletSpeed));
-			firing = true;
-			shootSound.play();
-		}
-	}
+//	/**
+//	 * Fires a projectile for the turret, if weapon is loaded
+//	 * @param turret The firing turret
+//	 */
+//	public void use(Turret turret) {
+//		if(timerTicks == 0) {
+//			timerTicks++;
+//			level.getBulletsList().add(new Projectile(level, (int)turret.getPositionX(), (int)turret.getPositionY(),
+//					(float)(turret.getAngleRadians() + Math.PI ), projectileSpritePath, bulletSpeed));
+//			firing = true;
+//			shootSound.play();
+//		}
+//	}
 	/**
 	 * Method to update shoot timer
 	 */
