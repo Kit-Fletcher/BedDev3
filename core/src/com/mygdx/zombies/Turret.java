@@ -12,8 +12,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.mygdx.zombies.items.Projectile;
 import com.mygdx.zombies.items.RangedWeapon;
 import com.mygdx.zombies.states.Level;
+import com.mygdx.zombies.states.Minigame;
 
 public class Turret extends Entity{
 
@@ -23,14 +25,20 @@ public class Turret extends Entity{
 	protected double angleRadians;
 	protected double angleDegrees;
 	private double angleToZombieRadians;
-	private ArrayList<Enemy> enemiesList;
+	private ArrayList<MinigameZombie> enemiesList;
 	private SpriteBatch spriteBatch;	
 	private boolean inLights;
-	private Level level;
+	private Minigame level;
 	private double distanceToZombie;
 	private RangedWeapon gun;
 	private boolean shoot = true;
-
+	protected static boolean firing;
+	private String projectilePath;
+	private float bulletSpeed;
+	private Sound sound;
+	
+	protected int shootDelay;
+	protected int timerTicks;
 	/**
 	 * Constructor for generic turret class
 	 * @param level - the level instance to spawn the enemy mob in
@@ -40,13 +48,16 @@ public class Turret extends Entity{
 	 * @param speed - the speed that this enemy will move
 	 * @param health - the amount of health that this enemy spawns with
 	 */
-	public Turret(Level level, int x, int y, String spritePath, int shootDelay, String projectileSpritePath, float bulletSpeed, Sound shootSound) {
+	public Turret(Minigame level, int x, int y, String spritePath, int shootDelay, String projectileSpritePath, float bulletSpeed, Sound shootSound) {
 		
 		//Add sprite
 		spriteBatch = level.getWorldBatch();
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
 		//add the turrets gun
-		gun = new RangedWeapon(level,shootDelay,projectileSpritePath,bulletSpeed,shootSound);
+		
+		this.projectilePath= projectileSpritePath;
+		this.bulletSpeed = bulletSpeed;
+		this.sound =shootSound;
 		//Add box2d body
 		FixtureDef fixtureDef = new FixtureDef() {
 			{
@@ -78,15 +89,21 @@ public class Turret extends Entity{
 			angleToZombieRadians = getAngleToZombie(getClosestZombie());
 			angleDegrees = (double)Math.toDegrees(angleToZombieRadians); 
 			sprite.setRotation((float) angleDegrees);	
-			gun.use(this);
+			this.use(this);
 			gun.update(getPositionX(),getPositionY(), (float) angleDegrees);
 			sprite.setRotation((float) angleDegrees);
+		}
+		if(timerTicks > 0)
+			timerTicks++;
+		if(timerTicks >= shootDelay) {
+			timerTicks = 0;
+			firing = false;
 		}
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 	}
 	
-	private Enemy getClosestZombie() {
-		Enemy closestZombie = null;
+	private MinigameZombie getClosestZombie() {
+		MinigameZombie closestZombie = null;
 		double distance = 0;
 		double newDistance;
 		for (int i = 0; i < enemiesList.size(); i++) {
@@ -103,7 +120,7 @@ public class Turret extends Entity{
 		return closestZombie;
 	}
 	
-	private double getAngleToZombie(Enemy zombie) {
+	private double getAngleToZombie(MinigameZombie zombie) {
 		if(zombie != null) {
 			shoot = true;
 			return Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
@@ -135,6 +152,20 @@ public class Turret extends Entity{
 	
 	public void render() {
 		sprite.draw(spriteBatch);
+	}
+	
+	/**
+	 * Fires a projectile for the turret, if weapon is loaded
+	 * @param turret The firing turret
+	 */
+	public void use(Turret turret) {
+		if(timerTicks == 0) {
+			timerTicks++;
+			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)turret.getPositionX(), (int)turret.getPositionY(),
+					(float)(turret.getAngleRadians() + Math.PI ), projectilePath, bulletSpeed));
+			firing = true;
+			sound.play();
+		}
 	}
 
 }
