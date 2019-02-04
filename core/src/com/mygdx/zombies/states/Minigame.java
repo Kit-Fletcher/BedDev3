@@ -41,6 +41,7 @@ public class Minigame extends State {
 	private ArrayList<Gate> gatesList;
 	private String path;
 	private Box2DDebugRenderer box2DDebugRenderer;
+	private int WaveCount = 1;
 	
 	/**
 	 * Constructor for the level
@@ -165,6 +166,12 @@ public class Minigame extends State {
 	public void update() {
 		//Method to update everything in the state
 		
+		//Check if wave is finished
+		if(enemiesList.size() == 0) {
+			WaveCount += 1;
+			spawnZombies();
+		}
+		
 		//Update the camera position
 		camera.position.set(Zombies.InitialViewportWidth / 2 + 400, Zombies.InitialViewportHeight / 2 + 700, 0);
 		camera.update();
@@ -207,6 +214,12 @@ public class Minigame extends State {
 		renderer.dispose();
 		map.dispose();
 		//box2DDebugRenderer.dispose();
+	}
+	
+	private void spawnZombies() {
+		for(int i = 0; i < WaveCount; i++) {
+			//spawn zombie
+		}
 	}
 }
 
