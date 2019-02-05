@@ -178,9 +178,11 @@ public class Level extends State {
 		//Get objects layer
 		MapObjects objects = map.getLayers().get("Objects").getObjects();
 		
+		
+		
 		//Iterate objects
 		for(MapObject object : objects) {
-			
+			System.out.println(object.getName());
 			//Retrieve properties
 			MapProperties p = object.getProperties();
 			int x = ((Float) p.get("x")).intValue();
@@ -194,17 +196,27 @@ public class Level extends State {
 			switch(object.getName()) {
 				case "powerUpHealth":
 					pickUpsList.add(new PickUp(this, x, y, "pickups/heart.png",
-							new PowerUp(0, 2, 0), InfoContainer.BodyID.PICKUP));
+							new PowerUp(0, 2, 0, 0, false), InfoContainer.BodyID.PICKUP));
 				break;
 				
 				case "powerUpSpeed":
 					pickUpsList.add(new PickUp(this, x, y, "pickups/speed2.png",
-							new PowerUp(1, 0, 0), InfoContainer.BodyID.PICKUP));
+							new PowerUp(1, 0, 0, 0, false), InfoContainer.BodyID.PICKUP));
 				break;
 				
 				case "powerUpStealth":
 					pickUpsList.add(new PickUp(this, x, y, "pickups/stealth2.png",
-							new PowerUp(0, 0, 1), InfoContainer.BodyID.PICKUP));
+							new PowerUp(0, 0, 1, 0, false), InfoContainer.BodyID.PICKUP));
+				break;
+				
+				case "powerUpMaxHealth":
+					pickUpsList.add(new PickUp(this, x, y, "pickups/heartPlus.png",
+							new PowerUp(0, 0, 0, 4, false), InfoContainer.BodyID.PICKUP));
+				break;
+				
+				case "powerUpShield":
+					pickUpsList.add(new PickUp(this, x, y, "pickups/shield.png",
+							new PowerUp(0, 0, 0, 0, true), InfoContainer.BodyID.PICKUP));
 				break;
 				
 				case "lasergun":
@@ -243,6 +255,7 @@ public class Level extends State {
 				break;
 				
 				default:
+					System.out.println(object.getName());
 					System.err.println("Error importing stage: unrecognised object");
 				break;
 			}

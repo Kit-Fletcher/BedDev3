@@ -23,6 +23,7 @@ import com.mygdx.zombies.states.StateManager;
 public class Player extends Entity {
 
 	private static Float health;
+	private static Float maxHealth = 10.f;
 	private static Float points;
 	private static String pointDisplay;
 	private Sprite sprite;
@@ -73,7 +74,7 @@ public class Player extends Entity {
 		
 		//Initialise player health if not yet set in previous stage
 		if(Player.health == null || Player.health <= 0) {
-			Player.health = 10.f;
+			Player.health = maxHealth;
 		}
 		
 		//Initialise points if not yet set in previous stage
@@ -350,7 +351,30 @@ public class Player extends Entity {
 	public void setPowerUp(PowerUp powerUp) {
 		Zombies.soundPowerUp.play();
 		this.powerUp = powerUp;
-		health += powerUp.getHealthBoost();
+		if ((powerUp.getHealthBoost() > 0) && (health <= (maxHealth - powerUp.getHealthBoost()))) {
+			health += powerUp.getHealthBoost();	
+		}
+		else if (powerUp.getHealthBoost() > 0) {
+			health = maxHealth;
+		}
+		if (powerUp.getMaxHealth() > 0) {
+			maxHealth += powerUp.getMaxHealth();
+		}
+		if (PowerUp.getShieldBoost()) {
+			System.out.println("Shield activated");
+			Thread shieldActive = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					long shieldActivationTime = System.currentTimeMillis();
+					do {
+						powerUp.setShieldBoost(true);
+					}
+					while ((System.currentTimeMillis() - shieldActivationTime) < 10000);
+					powerUp.setShieldBoost(false);
+				}
+			});
+			shieldActive.start();
+		}
 	}
 
 	public float getHealth() {
