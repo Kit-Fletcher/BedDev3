@@ -1418,7 +1418,7 @@
   <object id="50" name="zombie2" x="1285" y="456">
    <point/>
   </object>
-  <object id="51" name="zombie1" x="650" y="624">
+  <object id="51" name="zombie1" x="686" y="624">
    <point/>
   </object>
   <object id="52" name="powerUpHealth" x="1185" y="825">
