@@ -20,10 +20,10 @@ import com.mygdx.zombies.states.Minigame;
 public class Turret extends Entity{
 
 	
-	
-	protected Sprite sprite;
-	protected double angleRadians;
-	protected double angleDegrees;
+	private float range;
+	private Sprite sprite;
+	private double angleRadians;
+	private double angleDegrees;
 	private double angleToZombieRadians;
 	private ArrayList<MinigameZombie> enemiesList;
 	private SpriteBatch spriteBatch;	
@@ -48,13 +48,13 @@ public class Turret extends Entity{
 	 * @param speed - the speed that this enemy will move
 	 * @param health - the amount of health that this enemy spawns with
 	 */
-	public Turret(Minigame level, int x, int y, String spritePath, int shootDelay, String projectileSpritePath, float bulletSpeed, Sound shootSound) {
+	public Turret(Minigame level, int x, int y, String spritePath, int shootDelay, String projectileSpritePath, float bulletSpeed, Sound shootSound, float range) {
 		
 		//Add sprite
 		spriteBatch = level.getWorldBatch();
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
-		//add the turrets gun
-		
+		//initialise turret values
+		this.range = range;
 		this.projectilePath= projectileSpritePath;
 		this.shootDelay = shootDelay;
 		this.bulletSpeed = bulletSpeed;
@@ -118,8 +118,13 @@ public class Turret extends Entity{
 				closestZombie = enemiesList.get(i);
 			}
 		}
-		distanceToZombie = distance;
-		return closestZombie;
+		if(distance < range) {
+			distanceToZombie = distance;
+		
+			return closestZombie;
+		}
+	
+		return null;
 	}
 	
 	private double getAngleToZombie(MinigameZombie zombie) {
@@ -161,7 +166,7 @@ public class Turret extends Entity{
 	 * @param turret The firing turret
 	 */
 	public void use(Turret turret) {
-		if(timerTicks == 0) {
+		if(timerTicks == 0 & shoot) {
 			timerTicks++;
 			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)turret.getPositionX(), (int)turret.getPositionY(),
 					(float)(turret.getAngleRadians() + Math.PI ), projectilePath, bulletSpeed));
