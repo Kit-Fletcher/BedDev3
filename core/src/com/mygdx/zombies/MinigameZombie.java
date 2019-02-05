@@ -27,9 +27,13 @@ public class MinigameZombie extends Entity {
 	private int noiseTimer;
 	private int wanderTimer;
 	private int alertTimer;
+	private int moveCounter;
+	private double up, down, left, right;
 	private float alertSpeed;
 	private Minigame level;
 	private double distanceToPlayer;
+	private boolean exit;
+	private String map;
 
 	/**
 	 * Constructor for generic enemy class
@@ -68,6 +72,16 @@ public class MinigameZombie extends Entity {
 		noiseTimer = 300;
 		wanderTimer = 100;
 		alertTimer = -1;
+		
+		//Initialise movement values
+		moveCounter = 0;
+		up = (Math.PI * 1.5);
+		down = (Math.PI / 2);
+		left = 0;
+		right = Math.PI;
+		exit = false;
+		map = level.path;
+		
 		//Initialise variable which affects speed depending on alert status
 		alertSpeed = 0.2f;
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
@@ -77,77 +91,33 @@ public class MinigameZombie extends Entity {
 	/**
 	 * Updates position based on whether player has been detected
 	 */
-//	private void move() {
-//					
-//		angleToPlayerRadians = Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
-//			     new Vector2(player.getPositionX(), player.getPositionY()));
-//		
-//		distanceToPlayer = Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
-//				new Vector2(player.getPositionX(), player.getPositionY()));	
-//		
-//		if(alertTimer <= 0) {
-//			//Wandering state
-//			wanderTimer--;
-//			if (wanderTimer == 0) {
-//				//Walk in random direction
-//				angleRadians = Math.random()*Math.PI*2;
-//				wanderTimer = 150;
-//				alertSpeed = 0.2f;
-//			}
-//		}
-//		else {
-//			//Alert state
-//			angleRadians = angleToPlayerRadians;			
-//			alertTimer --;
-//		}
-//		
-//		int noise = (int)((double) level.getPlayer().getNoise()/(distanceToPlayer+1));
-//		if(noise>=3||isPlayerInSight()) {
-//			//If player detected, increase movement speed and set time alerted for
-//			alertTimer = noise*100;
-//			alertSpeed = 1;
-//		}
-//		
-//		//Move Box2D body in angleRadians, accounting for speed attributes
-//		body.applyLinearImpulse(new Vector2((float) Math.cos(angleRadians) * -speed * alertSpeed,
-//				(float) Math.sin(angleRadians) * -speed * alertSpeed), body.getPosition(), true);
-//			
-//		//Update sprite transformation
-//		angleDegrees = Math.toDegrees(angleRadians);
-//		sprite.setRotation((float) angleDegrees);		
-//		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
-//	}
-	
-	/**
-	 * @return true if the player is within 40 degrees of the zombie's line of sight
-	 * and close enough, considering how well lit player is
-	 */
-	private boolean isPlayerInSight() {				
-		return (Math.abs(angleDegrees-Math.toDegrees(angleRadians))<40) &&
-				(distanceToPlayer < 200 || (inLights && distanceToPlayer < 1000));
+	private void move() {
+		//System.out.println(angleRadians);
+		//System.out.println(down);
+		setDirection();
+			
+		//Move Box2D body in angleRadians, accounting for speed attributes
+		body.applyLinearImpulse(new Vector2((float) Math.cos(angleRadians) * -speed,
+				(float) Math.sin(angleRadians) * -speed), body.getPosition(), true);
+			
+		//Update sprite transformation
+		angleDegrees = Math.toDegrees(angleRadians);
+		sprite.setRotation((float) angleDegrees);		
+		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
+		
+		moveCounter ++;
 	}
-	
-	/**
-	 * Method to update zombie sound effects timer
-	 */
-	private void noiseStep() {
-		noiseTimer--;
-		//If timer reaches zero...
-		if(noiseTimer <= 0) {
-			noiseTimer = Zombies.random.nextInt(1000) + 500;
-			//Play a random sound, adjusting volume based on distance to player
-			Zombies.soundArrayZombie[1+Zombies.random.nextInt(Zombies.soundArrayZombie.length-1)]
-					.play(distanceToPlayer < 500 ? 500-(float)distanceToPlayer : 0);
-		}
-	}
+
 
 	/** Update all aspects of enemy
 	 * @param inLights - whether the player is lit by light sources
 	 */
 	public void update(boolean inLights) {
 		this.inLights = inLights;
-		//move();
-		noiseStep();
+		move();
+		if(exit == true) {
+			getInfo().flagForDeletion();
+		}
 	}
 
 	public int getPositionX() {
@@ -171,5 +141,53 @@ public class MinigameZombie extends Entity {
 		//Remove enemy if health below zero
 		if(health <= 0)					
 			getInfo().flagForDeletion();
+	}
+	
+	private void setDirection() {
+		//System.out.println(moveCounter);
+		
+		switch(map) {
+		
+		case "World_One_Minigame" :
+			switch(moveCounter) {
+			case 0 :
+				angleRadians = down;
+				break;
+			case 420 : 
+				angleRadians = right;
+				break;
+			case 880 :
+				angleRadians = up;
+				break;
+			case 950 :
+				exit = true;
+				break;
+			}
+		break;
+		
+		case "World_Two_Minigame" :
+			switch(moveCounter) {
+			case 0 :
+				angleRadians = down;
+				break;
+			}
+		break;
+
+		case "World_Four_Minigame" :
+			switch(moveCounter) {
+			case 0 :
+				angleRadians = down;
+				break;
+			}
+		break;
+		
+		case "World_Five_Minigame" :
+			switch(moveCounter) {
+			case 0 :
+				angleRadians = down;
+				break;
+			}
+			break;
+		}
 	}
 }

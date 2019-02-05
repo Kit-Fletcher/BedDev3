@@ -1395,11 +1395,7 @@
   </object>
  </objectgroup>
  <objectgroup id="40" name="Entries"/>
- <objectgroup id="41" name="Objects">
-  <object id="79" name="zombie1" x="448" y="544">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="41" name="Objects"/>
  <objectgroup id="31" name="Gates"/>
  <objectgroup id="43" name="Lights">
   <object id="54" name="street" x="382" y="140">

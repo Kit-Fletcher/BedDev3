@@ -47,15 +47,16 @@ public class Minigame extends State {
 	private RayHandler rayHandler;
 	private ArrayList<PointLight> lightsList;
 	private ArrayList<Gate> gatesList;
-	private String path;
+	public String path;
 	private Box2DDebugRenderer box2DDebugRenderer;
-	private int WaveCount = 1;
+	private int waveCount;
+	private int spawnX, spawnY, spawnCount, spawnDelay;
 	
 	/**
 	 * Constructor for the level
 	 * 
 	 */
-	public Minigame(String path) {
+	public Minigame(String path, int spawnX, int spawnY) {
 		super();
 		box2dWorld = new World(new Vector2(0, 0), true);
 		this.path = path;
@@ -74,6 +75,13 @@ public class Minigame extends State {
 						
 		initLights();			
 		loadObjects();
+		
+		waveCount = 0;
+		spawnCount = 0;
+		spawnDelay = 0;		
+		
+		this.spawnX = spawnX;
+		this.spawnY = spawnY;
 		
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -104,7 +112,7 @@ public class Minigame extends State {
 			switch(object.getName()) {
 				case "zombie1":
 					
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie1.png", 6, 5));
+					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie1.png", 3, 5));
 				break;
 				
 				case "zombie2":
@@ -180,7 +188,7 @@ public class Minigame extends State {
 	public void resize(int width, int height) {
 		camera.viewportWidth = width * Zombies.InitialViewportWidth / (float) Zombies.InitialViewportWidth;
 		camera.viewportHeight = height;
-		camera.zoom  = 3;
+		camera.zoom  = (float) 3.5;
 		camera.update();
 	}
 	
@@ -224,12 +232,14 @@ public class Minigame extends State {
 		
 		//Check if wave is finished
 		if(enemiesList.size() == 0) {
-			WaveCount += 1;
-			spawnZombies();
+			waveCount += 1;
+			spawnCount = waveCount * 2;
 		}
 		
+		spawnZombies();
+		
 		//Update the camera position
-		camera.position.set(Zombies.InitialViewportWidth / 2 + 400, Zombies.InitialViewportHeight / 2 + 700, 0);
+		camera.position.set(Zombies.InitialViewportWidth / 2 + 400, Zombies.InitialViewportHeight / 2 + 850, 0);
 		camera.update();
 		
 		//Update Box2D physics
@@ -282,10 +292,19 @@ public class Minigame extends State {
 	}
 	
 	private void spawnZombies() {
-		for(int i = 0; i < WaveCount; i++) {
-			//spawn zombie
+		
+		if(spawnCount > 0 && spawnDelay == 0) {
+			System.out.println("spawning");
+			System.out.println(spawnX);
+			System.out.println(spawnY);
+			enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 3, 5));
+			spawnCount --;
+			spawnDelay = 40;
+		} else if(spawnDelay > 0) {
+			spawnDelay --;
 		}
 	}
+	
 	public ArrayList<Projectile> getBulletsList() {
 		return bulletsList;
 	}
