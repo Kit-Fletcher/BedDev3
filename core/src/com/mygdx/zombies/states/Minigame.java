@@ -124,7 +124,7 @@ public class Minigame extends State {
 				break;
 				case "turret1":
 					
-					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot,1000));
+					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
 				break;
 				default:
 					System.err.println("Error importing stage: unrecognised object");

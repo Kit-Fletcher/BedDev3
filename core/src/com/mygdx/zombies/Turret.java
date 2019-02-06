@@ -87,12 +87,14 @@ public class Turret extends Entity{
 	}
 	
 	public void update() {
-		if(enemiesList!=null && shoot == true) {
-			angleToZombieRadians = getAngleToZombie(getClosestZombie());
+		if(enemiesList!=null) {
+			MinigameZombie zombie = getClosestZombie();
+			
+			angleToZombieRadians = getAngleToZombie(zombie);
 			angleDegrees = (double)Math.toDegrees(angleToZombieRadians); 
-			sprite.setRotation((float) angleDegrees);	
+			sprite.setRotation((float) angleDegrees);
+			
 			this.use(this);
-			//gun.update(getPositionX(),getPositionY(), (float) angleDegrees);
 			sprite.setRotation((float) angleDegrees);
 		}
 		if(timerTicks > 0)
@@ -120,7 +122,6 @@ public class Turret extends Entity{
 		}
 		if(distance < range) {
 			distanceToZombie = distance;
-		
 			return closestZombie;
 		}
 	
@@ -130,9 +131,13 @@ public class Turret extends Entity{
 	private double getAngleToZombie(MinigameZombie zombie) {
 		if(zombie != null) {
 			shoot = true;
-			return Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
+			double distance = Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(zombie.getPositionX(), zombie.getPositionY()));
-			
+			distance = Math.abs(1/Math.cos(Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
+				new Vector2(zombie.getPositionX() , zombie.getPositionY() ))));
+			return Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
+				new Vector2(zombie.getPositionX() + bulletSpeed* (float)distance * zombie.getVelocity().x, zombie.getPositionY() + bulletSpeed *  (float) distance * zombie.getVelocity().y ));
+		
 		}
 		shoot = false;
 		return angleToZombieRadians;
