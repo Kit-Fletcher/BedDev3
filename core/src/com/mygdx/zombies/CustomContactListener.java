@@ -94,8 +94,10 @@ public class CustomContactListener implements ContactListener {
 						zombie.setHealth(zombie.getHealth()-3);
 					}
 					else {
-						if (PowerUp.getShieldBoost() == false) {
-							player.setHealth(player.getHealth()-(player.getDamage()));			
+						if (player.getVulnerable()) {
+							System.out.println("Player health is : " + player.getHealth());
+							player.setHealth(player.getHealth()-(player.getDamage()));	
+							System.out.println("Player health is now : " + player.getHealth());
 							System.out.println("Player has contacted zombie");
 						}
 					}
