@@ -388,7 +388,12 @@ public class Player extends Entity {
 		Player.health = health;
 		//Restart current level from last entry point if health depleted
 		if(health <= 0)
+			points -= 1000;
 			StateManager.loadState(new Level(level.getPath(), level.getSpawnEntryID()));
+	}
+	
+	public void gainPoints(float x) {
+		points += x;
 	}
 	
 	public float getDamage() {
