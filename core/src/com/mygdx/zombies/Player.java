@@ -396,6 +396,10 @@ public class Player extends Entity {
 		points += x;
 	}
 	
+	public void losePoints(float x) {
+		points -= x;
+	}
+	
 	public float getDamage() {
 		return charDamage;
 	}

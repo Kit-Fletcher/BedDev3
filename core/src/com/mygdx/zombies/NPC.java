@@ -51,7 +51,8 @@ public class NPC extends Entity {
 	 */
 	public void setHealth(int health) {
 		this.health = health;
-		if(health <= 0)					
+		if(health <= 0)
+			player.losePoints(500);
 			getInfo().flagForDeletion();
 	}
 	

@@ -190,4 +190,10 @@ public class MinigameZombie extends Entity {
 			break;
 		}
 	}
+	public Vector2 getVelocity() {
+		return body.getLinearVelocity();
+	}
+	public float getSpeed() {
+		return speed;
+	}
 }
