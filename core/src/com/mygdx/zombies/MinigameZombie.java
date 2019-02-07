@@ -116,6 +116,7 @@ public class MinigameZombie extends Entity {
 		this.inLights = inLights;
 		move();
 		if(exit == true) {
+			level.loseHealth(1);
 			getInfo().flagForDeletion();
 		}
 	}
@@ -149,17 +150,17 @@ public class MinigameZombie extends Entity {
 		switch(map) {
 		
 		case "World_One_Minigame" :
-			switch(moveCounter) {
+			switch(moveCounter * (int) speed) {
 			case 0 :
 				angleRadians = down;
 				break;
-			case 420 : 
+			case 1260 : 
 				angleRadians = right;
 				break;
-			case 880 :
+			case 2640 :
 				angleRadians = up;
 				break;
-			case 950 :
+			case 2820 :
 				exit = true;
 				break;
 			}

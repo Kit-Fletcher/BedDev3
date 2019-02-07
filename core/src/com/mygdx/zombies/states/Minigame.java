@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -51,12 +53,14 @@ public class Minigame extends State {
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private int waveCount;
 	private int spawnX, spawnY, spawnCount, spawnDelay;
+	private int health;
+	private Sprite hud;
 	
 	/**
 	 * Constructor for the level
 	 * 
 	 */
-	public Minigame(String path, int spawnX, int spawnY) {
+	public Minigame(String path, int spawnX, int spawnY, int health) {
 		super();
 		box2dWorld = new World(new Vector2(0, 0), true);
 		this.path = path;
@@ -82,6 +86,9 @@ public class Minigame extends State {
 		
 		this.spawnX = spawnX;
 		this.spawnY = spawnY;
+		
+		this.health = health;
+		hud = new Sprite(new Texture(Gdx.files.internal("player/heart.png")));
 		
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -219,7 +226,10 @@ public class Minigame extends State {
 		
 		//Render HUD
 		UIBatch.begin();
-		//player.hudRender();
+		for (int i = 0; i < health; i++) {
+			hud.setPosition(100 + i * 50, 620);
+			hud.draw(UIBatch);
+		}
 		UIBatch.end();
 
 		//Enable this line to show Box2D physics debug info
@@ -230,10 +240,14 @@ public class Minigame extends State {
 	public void update() {
 		//Method to update everything in the state
 		
+		if(health <= 0) {
+			StateManager.loadState(StateManager.StateID.STAGE1,-1);
+		}
+		
 		//Check if wave is finished
 		if(enemiesList.size() == 0) {
 			waveCount += 1;
-			spawnCount = waveCount * 2;
+			spawnCount = waveCount * 3;
 		}
 		
 		spawnZombies();
@@ -297,7 +311,17 @@ public class Minigame extends State {
 			System.out.println("spawning");
 			System.out.println(spawnX);
 			System.out.println(spawnY);
-			enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 3, 5));
+			switch (spawnCount % 3) {
+				case 0 :
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 5, 3));
+				break;
+			case 1 :
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 3, 10));
+				break;
+			case 2 :
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 3, 5));
+				break;
+			}
 			spawnCount --;
 			spawnDelay = 40;
 		} else if(spawnDelay > 0) {
@@ -307,6 +331,10 @@ public class Minigame extends State {
 	
 	public ArrayList<Projectile> getBulletsList() {
 		return bulletsList;
+	}
+	
+	public void loseHealth(int x) {
+		health -= x;
 	}
 }
 
