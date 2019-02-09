@@ -55,15 +55,17 @@ public class Minigame extends State {
 	private int spawnX, spawnY, spawnCount, spawnDelay;
 	private int health;
 	private Sprite hud;
+	private StateManager.StateID returnStage;
 	
 	/**
 	 * Constructor for the level
 	 * 
 	 */
-	public Minigame(String path, int spawnX, int spawnY, int health) {
+	public Minigame(String path, int spawnX, int spawnY, int health,StateManager.StateID returnStage) {
 		super();
 		box2dWorld = new World(new Vector2(0, 0), true);
 		this.path = path;
+		this.returnStage = returnStage;
 		
 		bulletsList = new ArrayList<Projectile>();
 		enemiesList = new ArrayList<MinigameZombie>();
@@ -241,7 +243,7 @@ public class Minigame extends State {
 		//Method to update everything in the state
 		
 		if(health <= 0) {
-			StateManager.loadState(StateManager.StateID.STAGE1,-1);
+			StateManager.loadState(returnStage,-1);
 		}
 		
 		//Check if wave is finished
@@ -313,13 +315,13 @@ public class Minigame extends State {
 			System.out.println(spawnY);
 			switch (spawnCount % 3) {
 				case 0 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 5, 3));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 5, 5));
 				break;
 			case 1 :
 				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 3, 10));
 				break;
 			case 2 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 3, 5));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 4, 15));
 				break;
 			}
 			spawnCount --;

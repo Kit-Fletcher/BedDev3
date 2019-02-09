@@ -1446,7 +1446,7 @@
   </object>
   <object id="78" name="minigameGate" type="Gate" x="478.33" y="831.333" width="64" height="64">
    <properties>
-    <property name="Destination" value="MINIGAME"/>
+    <property name="Destination" value="MINI1"/>
     <property name="EntryID" type="int" value="0"/>
    </properties>
   </object>
