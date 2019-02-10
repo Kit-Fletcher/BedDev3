@@ -21,6 +21,7 @@ import com.mygdx.zombies.Enemy;
 import com.mygdx.zombies.Entity;
 import com.mygdx.zombies.Gate;
 import com.mygdx.zombies.InfoContainer;
+import com.mygdx.zombies.Mike;
 import com.mygdx.zombies.NPC;
 import com.mygdx.zombies.PickUp;
 import com.mygdx.zombies.Player;
@@ -254,6 +255,10 @@ public class Level extends State {
 					enemiesList.add(new Boss1(this, x, y));
 				break;
 				
+				case "mike":
+					enemiesList.add(new Mike(this, x, y));
+				break;
+					
 				default:
 					System.out.println(object.getName());
 					System.err.println("Error importing stage: unrecognised object");
