@@ -1,0 +1,11 @@
+diff a/core/src/com/mygdx/zombies/states/Minigame.java b/core/src/com/mygdx/zombies/states/Minigame.java	(rejected hunks)
+@@ -53,9 +53,6 @@
+ 	private Box2DDebugRenderer box2DDebugRenderer;
+ 	private int waveCount;
+ 	private int spawnX, spawnY, spawnCount, spawnDelay;
+-	private Button turret1;
+-	private Button turret2;
+-	boolean tur1 = false;
+ 	private int health;
+ 	private Sprite hud;
+ 	private StateManager.StateID returnStage;

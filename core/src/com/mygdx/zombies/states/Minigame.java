@@ -3,6 +3,7 @@ package com.mygdx.zombies.states;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,6 +34,7 @@ import com.mygdx.zombies.items.MeleeWeapon;
 import com.mygdx.zombies.items.PowerUp;
 import com.mygdx.zombies.items.Projectile;
 import com.mygdx.zombies.items.RangedWeapon;
+import com.mygdx.zombies.states.StateManager.StateID;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -42,6 +44,7 @@ public class Minigame extends State {
 	private ArrayList<MinigameZombie> enemiesList;
 	private ArrayList<Projectile> bulletsList;
 	private ArrayList<Turret> turretList;
+	private ArrayList<Button> placeList;
 	private World box2dWorld;
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
@@ -53,6 +56,9 @@ public class Minigame extends State {
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private int waveCount;
 	private int spawnX, spawnY, spawnCount, spawnDelay;
+	private Button turret1;
+	private Button turret2;
+	boolean tur1 = false;
 	private int health;
 	private Sprite hud;
 	private StateManager.StateID returnStage;
@@ -70,6 +76,7 @@ public class Minigame extends State {
 		bulletsList = new ArrayList<Projectile>();
 		enemiesList = new ArrayList<MinigameZombie>();
 		turretList = new ArrayList<Turret>();
+		placeList = new ArrayList<Button>();
 		String mapFile = String.format("stages/%s.tmx", path);
 		map = new TmxMapLoader().load(mapFile);
 		renderer = new OrthogonalTiledMapRenderer(map, Zombies.WorldScale);
@@ -95,6 +102,8 @@ public class Minigame extends State {
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		box2dWorld.setContactListener(new CustomContactListener());
+        turret1 = new Button(worldBatch,"turret1button.png", renderer, 1000, 1000, "");
+        turret2 = new Button(worldBatch,"turret2button.png", renderer, 1000, 800, "");
 		
 	}
 	/**
@@ -132,14 +141,18 @@ public class Minigame extends State {
 					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie3.png", 10, 5));
 				break;
 				case "turret1":
-					
 					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
 				break;
+				case "placer":
+                    placeList.add(new Button(worldBatch, "selecter.png",renderer, x, y, ""));
+                break;
 				default:
 					System.err.println("Error importing stage: unrecognised object");
 				break;
 			}
 		}
+		for (Button button : placeList)
+			button.change();
 	}
 	private void initLights() {
 		
@@ -213,6 +226,9 @@ public class Minigame extends State {
 		worldBatch.setProjectionMatrix(camera.combined);
 		worldBatch.begin();							
 		//Draw mobs and game objects
+		turret1.render();
+		turret2.render();
+		
 		
 		for (int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).render();
@@ -221,6 +237,9 @@ public class Minigame extends State {
 			bullet.render();
 		for (Turret turret : turretList)
 			turret.render();
+		for (Button button : placeList)
+			button.render();
+		
 		worldBatch.end();
 		
 		//Render lighting
@@ -241,6 +260,53 @@ public class Minigame extends State {
 	@Override
 	public void update() {
 		//Method to update everything in the state
+		//Buttons in screen add if it is hidden or not
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && Gdx.input.justTouched()) {
+			if(turret1.isHover() && turretList.size()< waveCount) {
+				tur1 = true;
+				for (int i = 0; i < placeList.size(); i++)
+					placeList.get(i).change();
+			
+			}
+			if(turret2.isHover() && turretList.size()< waveCount-2 && !tur1) {
+				for (int i = 0; i < placeList.size(); i++)
+					placeList.get(i).change();
+			
+			}
+			for (int i = 0; i < placeList.size(); i++)
+				if(placeList.get(i).isHover() & !placeList.get(i).getHide()) {
+					
+					if(tur1) {
+						turretList.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot,700));
+						tur1= false;
+					}else {
+						turretList.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret2.png", 10, "laser.png", 50, Zombies.soundLaser,500));
+					}
+					placeList.remove(i);
+					i --;
+					for (int l = 0; l < placeList.size(); l++)
+						placeList.get(l).change();
+					break;
+			}
+//			if (play.isHover()) {
+//				Zombies.soundSelect.play();
+//				//Start playing ambient sound
+//				Zombies.soundAmbientWind.loop();
+//				StateManager.loadState(StateID.BRIEFINGSCREEN);
+//			}
+//			else if (credits.isHover()) {
+//				Zombies.soundSelect.play();
+//				StateManager.loadState(StateID.CREDITSMENU);
+//			}
+//			else if (options.isHover()) {
+//				Zombies.soundSelect.play();
+//				StateManager.loadState(StateID.OPTIONSMENU);
+//			}
+//			else if (exit.isHover()) {
+//				//Quit the game
+//				Gdx.app.exit();
+//			}
+		}
 		
 		if(health <= 0) {
 			StateManager.loadState(returnStage,-1);

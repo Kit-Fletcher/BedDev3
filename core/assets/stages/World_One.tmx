@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="45" nextobjectid="81">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="45" nextobjectid="81">
  <tileset firstgid="1" source="Assets/Tileset.tsx"/>
  <tileset firstgid="1041" source="Assets/Roads.tsx"/>
- <tileset firstgid="14523" name="exit" tilewidth="32" tileheight="32" tilecount="2" columns="2">
-  <image source="../exit.png" width="64" height="32"/>
+ <tileset firstgid="14523" name="exit" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../zombie/boss1_head.png" width="80" height="80"/>
  </tileset>
  <layer id="2" name="Backgroud" width="50" height="50">
   <data encoding="csv">
@@ -1503,7 +1503,7 @@
   </object>
   <object id="78" name="minigameGate" type="Gate" x="478.33" y="831.333" width="64" height="64">
    <properties>
-    <property name="Destination" value="MINIGAME"/>
+    <property name="Destination" value="MINI1"/>
     <property name="EntryID" type="int" value="0"/>
    </properties>
   </object>
