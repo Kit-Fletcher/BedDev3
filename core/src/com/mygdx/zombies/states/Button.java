@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.mygdx.zombies.Zombies;
+import com.mygdx.zombies.states.State;
 
 /**
  * Button class with two variants: 1) standard button   2) updating mode button
@@ -17,7 +20,10 @@ public class Button {
 	private int positionX;
 	private int positionY;
 	private String text;
+	private String path = null;
+	private TiledMap map;
 	private int mode;
+	private boolean hide;
 	private String[] modeTextArray;
 
 	/**
@@ -32,6 +38,13 @@ public class Button {
 		setup(spriteBatch, x, y);
 	}
 	
+	public Button(SpriteBatch spriteBatch,String path,OrthogonalTiledMapRenderer renderer, int x, int y, String text) {
+		this.text = text;	
+		setup(spriteBatch,path, x, y);
+		this.path = path;
+		System.out.println("Renderer" + renderer.getViewBounds().x);
+	}
+	
 	/**
 	 * Constructor for the updating button variant
 	 * @param spriteBatch -  the spriteBatch to draw the button to
@@ -42,6 +55,7 @@ public class Button {
 	public Button(SpriteBatch spriteBatch, int x, int y, String[] modeTextArray) {
 		mode = 0;
 		text = modeTextArray[mode];
+		
 		this.modeTextArray = modeTextArray;
 		setup(spriteBatch, x, y);
 	}
@@ -64,6 +78,20 @@ public class Button {
 		positionX = x;
 		positionY = y;
 	}
+	
+	private void setup(SpriteBatch spriteBatch,String path, int x, int y) {
+		this.spriteBatch = spriteBatch;
+		//Load textures and set up sprites
+		mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/" + path)));
+		mainSprite.setPosition(x, y);
+		hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hover" + path)));
+		hoverSprite.setPosition(x, y);
+		
+		positionX = x;
+		positionY = y;
+	}
+
+
 	
 	/**
 	 * Go to the next mode and display the associated text string, only works if updating variant
@@ -96,33 +124,68 @@ public class Button {
 	 * @return true if the mouse is hovering over the button
 	 */
 	public boolean isHover() {
-		// Adjust mouse coordinates in case the window is resized
-		float adjustedMouseX = Gdx.input.getX() * Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth();
-		float adjustedMouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) * Zombies.InitialWindowHeight
-				/ (float) Gdx.graphics.getHeight();
-		//Return if the mouse is in the button rectangle
-		return mainSprite.getBoundingRectangle()
-				.contains(adjustedMouseX, adjustedMouseY);
+		if(!hide) {
+			float adjustedMouseX;
+			float adjustedMouseY;
+			//Return if the mouse is in the button rectangle
+			if(this.path != null){
+				adjustedMouseX = (Gdx.input.getX()-342)*3.5f;
+				adjustedMouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()-14)*3.5f;
+//				System.out.println("hi");
+//				adjustedMouseX *= Zombies.WorldScale;
+//				adjustedMouseX +=
+//				adjustedMouseY *= Zombies.WorldScale;
+//				adjustedMouseY +=
+			}else{
+			// Adjust mouse coordinates in case the window is resized
+				adjustedMouseX = Gdx.input.getX() * Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth();
+				adjustedMouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) * Zombies.InitialWindowHeight
+						/ (float) Gdx.graphics.getHeight();
+			}
+			return mainSprite.getBoundingRectangle()
+					.contains(adjustedMouseX, adjustedMouseY);
+		}else {
+			return false;
+		}
 	}
 
 	/**
 	 * Draw the button to the screen
 	 */
-	public void render() {		
-		//Draw sprite
-		if (isHover())
-			hoverSprite.draw(spriteBatch);
-		else
-			mainSprite.draw(spriteBatch);
-		//Draw text
-		Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 148) - (text.length() * 14)), positionY + 69);
+	public void render() {	
+		if(!hide) {
+			//Draw sprite
+			if (isHover())
+				hoverSprite.draw(spriteBatch);
+			else
+				mainSprite.draw(spriteBatch);
+			//Draw text
+			Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 148) - (text.length() * 14)), positionY + 69);
+	
+		}
 	}
-
+	
 	/**
 	 * Clean up the memory and dispose
 	 */
 	public void dispose() {
 		mainSprite.getTexture().dispose();
 		hoverSprite.getTexture().dispose();
+	}
+	public void change() {
+		hide = !hide;
+	}
+	
+	public boolean getHide() {
+		return hide;
+	}
+	public int getX() {
+		return (int) mainSprite.getX();
+	}
+	public int getY() {
+		return (int) mainSprite.getY();
+	}
+	public int getWidth() {
+		return (int) mainSprite.getWidth();
 	}
 }
