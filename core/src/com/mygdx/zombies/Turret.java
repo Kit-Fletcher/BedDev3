@@ -121,6 +121,7 @@ public class Turret extends Entity{
 			}
 		}
 		if(distance < range) {
+			
 			distanceToZombie = distance;
 			return closestZombie;
 		}
@@ -135,8 +136,10 @@ public class Turret extends Entity{
 				new Vector2(zombie.getPositionX(), zombie.getPositionY()));
 			distance = Math.abs(1/Math.cos(Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(zombie.getPositionX() , zombie.getPositionY() ))));
+			//System.out.println(distance);
+			float offset = 400/bulletSpeed;
 			return Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
-				new Vector2(zombie.getPositionX() + bulletSpeed* (float)distance * zombie.getVelocity().x, zombie.getPositionY() + bulletSpeed *  (float) distance * zombie.getVelocity().y ));
+				new Vector2(zombie.getPositionX() + offset* (float)distance * zombie.getVelocity().x, zombie.getPositionY() + offset *  (float) distance * zombie.getVelocity().y ));
 		
 		}
 		shoot = false;
