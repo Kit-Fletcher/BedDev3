@@ -68,9 +68,7 @@ public class CustomContactListener implements ContactListener {
 					Projectile projectile = (Projectile)a.getObj();
 					projectile.getInfo().flagForDeletion();
 					Enemy zombie = (Enemy)b.getObj();
-					if(! zombie.getImmunity()) {
-						zombie.setHealth(zombie.getHealth()-1);
-					}		
+					zombie.setHealth(zombie.getHealth()-1);			
 					System.out.println("Zombie has been damaged");
 				}
 				else if (bType == InfoContainer.BodyID.WALL) {
@@ -93,15 +91,11 @@ public class CustomContactListener implements ContactListener {
 					if (player.isSwinging()) {
 						player.setHealth(player.getHealth()-player.getDamage());
 						Enemy zombie = (Enemy)b.getObj();
-						if(! zombie.getImmunity()) {
-							zombie.setHealth(zombie.getHealth()-3);
-						}
+						zombie.setHealth(zombie.getHealth()-3);
 					}
 					else {
 						if (player.getVulnerable()) {
-							System.out.println("Player health is : " + player.getHealth());
-							player.setHealth(player.getHealth()-(player.getDamage()));	
-							System.out.println("Player health is now : " + player.getHealth());
+							player.setHealth(player.getHealth()-(player.getDamage()));			
 							System.out.println("Player has contacted zombie");
 						}
 					}

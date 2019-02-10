@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="69">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="69">
  <tileset firstgid="1" source="Assets/Tileset.tsx"/>
  <tileset firstgid="1041" source="Assets/Roads.tsx"/>
+ <tileset firstgid="14523" name="exit" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../exit.png" width="64" height="32"/>
+ </tileset>
  <layer id="1" name="Background" width="50" height="50">
   <data encoding="csv">
 127,169,208,207,170,169,130,208,207,170,127,127,168,127,169,209,168,167,129,208,170,210,101,64,65,64,65,62,63,64,65,62,63,185,182,183,184,185,64,65,62,63,64,65,62,63,64,65,62,63,
@@ -470,7 +473,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,747,748,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,787,788,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,261,260,259,260,259,260,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,301,300,299,300,299,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,301,300,299,300,299,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14523,14524,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,273,276,273,276,273,276,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,909,910,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,313,316,313,316,313,316,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,949,950,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -792,9 +795,57 @@
    <polygon points="0,0 2,194 -30,194 -30,272 66,270 63,-8"/>
   </object>
  </objectgroup>
- <objectgroup id="18" name="Gates"/>
- <objectgroup id="19" name="Entries"/>
- <objectgroup id="20" name="Objects"/>
+ <objectgroup id="18" name="Gates">
+  <object id="59" name="gate" type="Gate" x="1457" y="1121" width="83" height="57">
+   <properties>
+    <property name="Destination" value="STAGE3"/>
+    <property name="EntryID" type="int" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="19" name="Entries">
+  <object id="58" name="entry" type="Entry" x="87" y="484">
+   <properties>
+    <property name="EntryID" type="int" value="0"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="20" name="Objects">
+  <object id="37" name="lasergun" x="656" y="728">
+   <point/>
+  </object>
+  <object id="39" name="powerUpStealth" x="583" y="841">
+   <point/>
+  </object>
+  <object id="60" name="zombie1" x="1049" y="1468">
+   <point/>
+  </object>
+  <object id="61" name="zombie1" x="995" y="1309">
+   <point/>
+  </object>
+  <object id="62" name="zombie1" x="860" y="1346">
+   <point/>
+  </object>
+  <object id="63" name="zombie1" x="699" y="1349">
+   <point/>
+  </object>
+  <object id="64" name="zombie3" x="558" y="1446">
+   <point/>
+  </object>
+  <object id="65" name="zombie3" x="595" y="1268">
+   <point/>
+  </object>
+  <object id="66" name="zombie3" x="1100" y="1279">
+   <point/>
+  </object>
+  <object id="67" name="zombie3" x="1179" y="1398">
+   <point/>
+  </object>
+  <object id="68" name="zombie3" x="1330" y="1501">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="21" name="Lights">
   <object id="40" name="red" x="129" y="1059">
    <point/>

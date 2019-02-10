@@ -116,6 +116,7 @@ public class MinigameZombie extends Entity {
 		this.inLights = inLights;
 		move();
 		if(exit == true) {
+			level.loseHealth(health / 5);
 			getInfo().flagForDeletion();
 		}
 	}
@@ -145,36 +146,52 @@ public class MinigameZombie extends Entity {
 	
 	private void setDirection() {
 		//System.out.println(moveCounter);
-		
+		int temp = moveCounter * (int) speed;
 		switch(map) {
-		
 		case "World_One_Minigame" :
-			switch(moveCounter) {
+			switch((temp < 1260) ? 0 : 
+					(temp >= 1260  && temp < 2640) ? 1 : 
+					(temp >= 2640  && temp < 2820) ? 2 : 3) {
 			case 0 :
 				angleRadians = down;
 				break;
-			case 420 : 
+			case 1 : 
 				angleRadians = right;
 				break;
-			case 880 :
+			case 2 :
 				angleRadians = up;
 				break;
-			case 950 :
+			case 3 :
 				exit = true;
 				break;
 			}
 		break;
 		
 		case "World_Two_Minigame" :
-			switch(moveCounter) {
+			switch((temp < 440) ? 0 : 
+					(temp >= 440  && temp < 1700) ? 1 : 
+					(temp >= 1700  && temp < 2800) ? 2 :
+					(temp >= 2800  && temp < 2970) ? 3 : 4) {
 			case 0 :
+				angleRadians = right;
+				break;
+			case 1 : 
 				angleRadians = down;
+				break;
+			case 2 :
+				angleRadians = right;
+				break;
+			case 3 :
+				angleRadians = up;
+				break;
+			case 4 :
+				exit = true;
 				break;
 			}
 		break;
 
 		case "World_Four_Minigame" :
-			switch(moveCounter) {
+			switch(moveCounter * (int) speed) {
 			case 0 :
 				angleRadians = down;
 				break;
@@ -182,7 +199,7 @@ public class MinigameZombie extends Entity {
 		break;
 		
 		case "World_Five_Minigame" :
-			switch(moveCounter) {
+			switch(moveCounter * (int) speed) {
 			case 0 :
 				angleRadians = down;
 				break;

@@ -12,8 +12,9 @@ public class StateManager {
 	
 	//Enum of state ids, used to identify different types of state
 	public static enum StateID {
-		MAINMENU, CREDITSMENU, OPTIONSMENU, ENDSCREEN, BRIEFINGSCREEN, MINIGAME,
-		PLAYERSELECTMENU, STAGE1, STAGE2, STAGE3, TESTSTAGE1, TESTSTAGE2
+		MAINMENU, CREDITSMENU, OPTIONSMENU, ENDSCREEN, BRIEFINGSCREEN,
+		PLAYERSELECTMENU, STAGE1, STAGE2, STAGE3, TESTSTAGE1, TESTSTAGE2,
+		STAGE4, STAGE5, STAGE6, MINI1, MINI2, MINI4, MINI5
 	}
 
 	/**
@@ -93,9 +94,26 @@ public class StateManager {
 			case STAGE3:
 				tempState = new Level("World_Three", entryID);
 				break;
-			case MINIGAME:
-				System.out.println("entering minigame state");
-				tempState = new Minigame("World_One_Minigame", 100, 2200);
+			case STAGE4:
+				tempState = new Level("World_Four", entryID);
+				break;
+			case STAGE5:
+				tempState = new Level("World_Five", entryID);
+				break;
+			case STAGE6:
+				tempState = new Level("World_Six", entryID);
+				break;
+			case MINI1:
+				tempState = new Minigame("World_One_Minigame", 100, 2200, 3, StateID.STAGE1);
+				break;
+			case MINI2:
+				tempState = new Minigame("World_Two_Minigame", 100, 2200, 5, StateID.STAGE2);
+				break;
+			case MINI4:
+				tempState = new Minigame("World_Four_Minigame", 100, 2200, 1, StateID.STAGE4);
+				break;
+			case MINI5:
+				tempState = new Minigame("World_Five_Minigame", 100, 2200, 10, StateID.STAGE5);
 				break;
 			default:
 				System.err.println("Error: Unrecognised gate destination");

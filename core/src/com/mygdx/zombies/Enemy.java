@@ -19,6 +19,7 @@ public class Enemy extends Entity {
 	protected Sprite sprite;
 	protected double angleRadians;
 	protected double angleDegrees;
+	protected boolean immunity; 
 	private double angleToPlayerRadians;
 	private Player player;
 	private SpriteBatch spriteBatch;	
@@ -186,4 +187,12 @@ public class Enemy extends Entity {
 	public void setDistanceToPlayer(double distanceToPlayer) {
 		this.distanceToPlayer = distanceToPlayer;
 	}
+	
+	public boolean getImmunity() {
+		return immunity;
+	}
+	public void setImmunity(boolean flag) {
+		this.immunity = flag;
+	}
+	
 }

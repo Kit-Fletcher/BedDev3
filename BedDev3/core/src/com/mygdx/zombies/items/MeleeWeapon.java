@@ -45,10 +45,10 @@ public class MeleeWeapon implements Weapon {
 	@Override
 	public void update(int x, int y, float rotation) {
 		//set position to front part of player sprite, sticking to player rotation and rotating with mouse.
+		
 		sprite.setPosition((x-10) + (float) (Math.cos(Math.toRadians(rotation))*15), y + (float) (Math.sin(Math.toRadians(rotation))*20));
-		sprite.setRotation(rotation);			
+		sprite.setRotation(rotation);
 	}
-	
 	/**
 	 * Dispose method to clear memory
 	 */

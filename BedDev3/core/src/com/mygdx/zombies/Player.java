@@ -46,7 +46,7 @@ public class Player extends Entity {
 	private static Texture unequippedTexture;
 	private static Level level;
 	private boolean isVulnerable = true;
-	
+
 	/** Constructor for the player class
 	 * @param level - the level instance to spawn the player in
 	 * @param x - the x spawn coordinate
@@ -377,12 +377,12 @@ public class Player extends Entity {
 			shieldActive.start();
 		}
 	}
-
+	
 	// Returns true if player can be damaged
 	public boolean getVulnerable() {
 		return isVulnerable;
 	}
-	
+
 	public float getHealth() {
 		return health;
 	}
@@ -393,19 +393,8 @@ public class Player extends Entity {
 	public void setHealth(float health) {
 		Player.health = health;
 		//Restart current level from last entry point if health depleted
-		if(health <= 0) {
-			points -= 1000;
-			System.out.println("current health " + health);
+		if(health <= 0)
 			StateManager.loadState(new Level(level.getPath(), level.getSpawnEntryID()));
-		}
-	}
-	
-	public void gainPoints(float x) {
-		points += x;
-	}
-	
-	public void losePoints(float x) {
-		points -= x;
 	}
 	
 	public float getDamage() {
