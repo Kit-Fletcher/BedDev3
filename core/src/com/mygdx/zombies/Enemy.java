@@ -70,6 +70,8 @@ public class Enemy extends Entity {
 		alertTimer = -1;
 		//Initialise variable which affects speed depending on alert status
 		alertSpeed = 0.2f;
+		
+		immunity = false;
 	}
 
 	/**
@@ -167,9 +169,10 @@ public class Enemy extends Entity {
 	public void setHealth(int health) {
 		this.health = health;
 		//Remove enemy if health below zero
-		if(health <= 0)
+		if(health <= 0) {
 			player.gainPoints(10 * health);
 			getInfo().flagForDeletion();
+		}
 	}
 
 	public int getNoiseTimer() {

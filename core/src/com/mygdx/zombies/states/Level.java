@@ -252,7 +252,7 @@ public class Level extends State {
 				break;
 				
 				case "boss1":
-					enemiesList.add(new Boss1(this, x, y));
+					enemiesList.add(new Mike(this, x, y));
 				break;
 				
 				case "mike":

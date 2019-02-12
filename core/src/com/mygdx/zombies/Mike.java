@@ -47,6 +47,11 @@ public class Mike extends Enemy {
 	public void update(boolean inLights) {
 		super.update(inLights);
 		
+		time = Gdx.graphics.getDeltaTime();
+		System.out.println("mike's health is " + getHealth());
+		System.out.println("mike's timer is " + time);
+		
+		
 		//Looping hand animation timer 
 		attackStep+=3;
 		if(attackStep > 100)

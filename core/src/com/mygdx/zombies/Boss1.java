@@ -102,7 +102,7 @@ public class Boss1 extends Enemy {
 		armLeft.getTexture().dispose();
 		armRight.getTexture().dispose();
 		//Load win screen now this enemy is killed
-		StateManager.loadState(StateID.ENDSCREEN);
+		StateManager.loadState(StateID.STAGE4);
 	}
 		
 	@Override
