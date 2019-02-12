@@ -40,16 +40,16 @@ public class Mike extends Enemy {
 		//Initialise timer values
 		attackStep = 0;
 		minionSpawnStep = 0;
-		time = Gdx.graphics.getDeltaTime();
+		time = 0;
 	}
 	
 	@Override
 	public void update(boolean inLights) {
 		super.update(inLights);
 		
-		time = Gdx.graphics.getDeltaTime();
-		System.out.println("mike's health is " + getHealth());
-		System.out.println("mike's timer is " + time);
+		time ++;
+		//System.out.println("mike's health is " + getHealth());
+		//System.out.println("mike's timer is " + time);
 		
 		
 		//Looping hand animation timer 
@@ -57,14 +57,14 @@ public class Mike extends Enemy {
 		if(attackStep > 100)
 			attackStep = 0;
 		//immunity timer
-		if(time < 5) {
-			setImmunity( true);
-		}
-		if(time < 10) {
-			setImmunity( false);
-		}
-		if(time < 20) {
-			time = -20 ;
+		if(time == 1) {
+			setImmunity(true);
+			System.out.println("Immunity set to true");
+		} else if(time == 100) {
+			setImmunity(false);
+			System.out.println("Immunity set to false");
+		} else if(time == 200) {
+			time = 0;
 		}
 		
 		
