@@ -1,6 +1,7 @@
 package com.mygdx.zombies.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,6 +26,7 @@ public class Button {
 	private int mode;
 	private boolean hide;
 	private String[] modeTextArray;
+	private OrthographicCamera camera;
 
 	/**
 	 * Constructor for the standard button variant
@@ -38,11 +40,13 @@ public class Button {
 		setup(spriteBatch, x, y);
 	}
 	
-	public Button(SpriteBatch spriteBatch,String path,OrthogonalTiledMapRenderer renderer, int x, int y, String text) {
+	public Button(SpriteBatch spriteBatch,String path,OrthographicCamera camera, int x, int y, String text) {
 		this.text = text;	
+		
 		setup(spriteBatch,path, x, y);
 		this.path = path;
-		System.out.println("Renderer" + renderer.getViewBounds().x);
+		this.camera = camera;
+		
 	}
 	
 	/**
@@ -82,13 +86,23 @@ public class Button {
 	private void setup(SpriteBatch spriteBatch,String path, int x, int y) {
 		this.spriteBatch = spriteBatch;
 		//Load textures and set up sprites
-		mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/" + path)));
-		mainSprite.setPosition(x, y);
-		hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hover" + path)));
-		hoverSprite.setPosition(x, y);
-		
-		positionX = x;
+		if(path == "") {
+			mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/button.png")));
+			mainSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
+			hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hoverbutton.png")));
+			hoverSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
+			positionX = (int) (x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth());
+		}else {
+			mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/" + path)));
+			mainSprite.setPosition(x, y);
+			hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hover" + path)));
+			hoverSprite.setPosition(x, y);
+			positionX = x;
+			
+		}
 		positionY = y;
+		
+		
 	}
 
 
@@ -127,10 +141,11 @@ public class Button {
 		if(!hide) {
 			float adjustedMouseX;
 			float adjustedMouseY;
+			float screenScale = Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth();
 			//Return if the mouse is in the button rectangle
 			if(this.path != null){
-				adjustedMouseX = (Gdx.input.getX()-342)*3.5f;
-				adjustedMouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()-14)*3.5f;
+				adjustedMouseX = (Gdx.input.getX()-(Gdx.graphics.getWidth()/2 -(686/2)))*3.5f;
+				adjustedMouseY = (Gdx.graphics.getHeight()- Gdx.input.getY()-(Gdx.graphics.getHeight()/2 -(686/2)))*3.5f;
 //				System.out.println("hi");
 //				adjustedMouseX *= Zombies.WorldScale;
 //				adjustedMouseX +=
@@ -147,6 +162,7 @@ public class Button {
 		}else {
 			return false;
 		}
+		
 	}
 
 	/**
@@ -160,8 +176,11 @@ public class Button {
 			else
 				mainSprite.draw(spriteBatch);
 			//Draw text
-			Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 148) - (text.length() * 14)), positionY + 69);
-	
+			if(path==null) {
+				Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 148) - (text.length() * 14)), positionY + 69);
+			}else {
+				Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 175) - (text.length() * 14)), positionY + 69);
+			}
 		}
 	}
 	

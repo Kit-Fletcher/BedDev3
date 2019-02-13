@@ -43,7 +43,8 @@ public class Minigame extends State {
 
 	private ArrayList<MinigameZombie> enemiesList;
 	private ArrayList<Projectile> bulletsList;
-	private ArrayList<Turret> turretList;
+	private ArrayList<Turret> turret1List;
+	private ArrayList<Turret> turret2List;
 	private ArrayList<Button> placeList;
 	private World box2dWorld;
 	private TiledMap map;
@@ -59,6 +60,8 @@ public class Minigame extends State {
 	private Button turret1;
 	private Button turret2;
 	boolean tur1 = false;
+	int count1 =1;
+	int count2 =-2; 
 	private int health;
 	private Sprite hud;
 	private StateManager.StateID returnStage;
@@ -75,12 +78,12 @@ public class Minigame extends State {
 		
 		bulletsList = new ArrayList<Projectile>();
 		enemiesList = new ArrayList<MinigameZombie>();
-		turretList = new ArrayList<Turret>();
+		turret1List = new ArrayList<Turret>();
+		turret2List = new ArrayList<Turret>();
 		placeList = new ArrayList<Button>();
 		String mapFile = String.format("stages/%s.tmx", path);
 		map = new TmxMapLoader().load(mapFile);
 		renderer = new OrthogonalTiledMapRenderer(map, Zombies.WorldScale);
-
 		box2dWorld = new World(new Vector2(0, 0), true);
 		box2DDebugRenderer = new Box2DDebugRenderer();
 
@@ -102,8 +105,10 @@ public class Minigame extends State {
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		box2dWorld.setContactListener(new CustomContactListener());
-        turret1 = new Button(worldBatch,"turret1button.png", renderer, 1000, 1000, "");
-        turret2 = new Button(worldBatch,"turret2button.png", renderer, 1000, 800, "");
+        turret1 = new Button(worldBatch,"", camera, (int)((( 437/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:1");
+        turret2 = new Button(worldBatch,"", camera, (int)((( 437*3/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:2");
+        turret1.change();
+        turret2.change();
 		
 	}
 	/**
@@ -140,11 +145,11 @@ public class Minigame extends State {
 				case "zombie3":
 					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie3.png", 10, 5));
 				break;
-				case "turret1":
-					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
-				break;
+//				case "turret1":
+//					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
+//				break;
 				case "placer":
-                    placeList.add(new Button(worldBatch, "selecter.png",renderer, x, y, ""));
+                    placeList.add(new Button(worldBatch, "selecter.png",camera, x, y, ""));
                 break;
 				default:
 					System.err.println("Error importing stage: unrecognised object");
@@ -235,7 +240,9 @@ public class Minigame extends State {
 		
 		for (Projectile bullet : bulletsList)
 			bullet.render();
-		for (Turret turret : turretList)
+		for (Turret turret : turret1List)
+			turret.render();
+		for (Turret turret : turret2List)
 			turret.render();
 		for (Button button : placeList)
 			button.render();
@@ -262,13 +269,14 @@ public class Minigame extends State {
 		//Method to update everything in the state
 		//Buttons in screen add if it is hidden or not
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && Gdx.input.justTouched()) {
-			if(turret1.isHover() && turretList.size()< waveCount) {
+			
+			if(turret1.isHover() && turret1List.size()< count1) {
 				tur1 = true;
 				for (int i = 0; i < placeList.size(); i++)
 					placeList.get(i).change();
 			
 			}
-			if(turret2.isHover() && turretList.size()< waveCount-2 && !tur1) {
+			if(turret2.isHover() && turret2List.size()< count2 && !tur1) {
 				for (int i = 0; i < placeList.size(); i++)
 					placeList.get(i).change();
 			
@@ -277,10 +285,10 @@ public class Minigame extends State {
 				if(placeList.get(i).isHover() & !placeList.get(i).getHide()) {
 					
 					if(tur1) {
-						turretList.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot,700));
+						turret1List.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot,1000));
 						tur1= false;
 					}else {
-						turretList.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret2.png", 10, "laser.png", 50, Zombies.soundLaser,500));
+						turret2List.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret2.png", 10, "laser.png", 50, Zombies.soundLaser,500));
 					}
 					placeList.remove(i);
 					i --;
@@ -288,6 +296,7 @@ public class Minigame extends State {
 						placeList.get(l).change();
 					break;
 			}
+			
 //			if (play.isHover()) {
 //				Zombies.soundSelect.play();
 //				//Start playing ambient sound
@@ -307,7 +316,16 @@ public class Minigame extends State {
 //				Gdx.app.exit();
 //			}
 		}
-		
+		if((turret1List.size()< count1) && turret1.getHide() ) {
+			turret1.change();
+		}else if(turret1List.size() == count1 && !turret1.getHide()){
+			turret1.change();
+		}
+		if((turret2List.size()< count2) && turret2.getHide() ) {
+			turret2.change();
+		}else if(turret2List.size() == count1 && !turret2.getHide()){
+			turret2.change();
+		}
 		if(health <= 0) {
 			StateManager.loadState(returnStage,-1);
 		}
@@ -315,6 +333,8 @@ public class Minigame extends State {
 		//Check if wave is finished
 		if(enemiesList.size() == 0) {
 			waveCount += 1;
+			count1 ++;
+			count2 ++;
 			spawnCount = waveCount * 3;
 		}
 		
@@ -330,9 +350,10 @@ public class Minigame extends State {
 		//Update mobs
 		for(int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).update(this.inLights());			
-		for (Turret turret : turretList)
+		for (Turret turret : turret1List)
 			turret.update();
-		
+		for (Turret turret : turret2List)
+			turret.update();
 		//Remove deletion flagged objects
 		Entity.removeDeletionFlagged(enemiesList);
 		Entity.removeDeletionFlagged(bulletsList);
@@ -395,6 +416,7 @@ public class Minigame extends State {
 		} else if(spawnDelay > 0) {
 			spawnDelay --;
 		}
+		
 	}
 	
 	public ArrayList<Projectile> getBulletsList() {
