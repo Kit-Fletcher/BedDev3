@@ -341,7 +341,8 @@ public class Minigame extends State {
 		spawnZombies();
 		
 		//Update the camera position
-		camera.position.set(Zombies.InitialViewportWidth / 2 + 400, Zombies.InitialViewportHeight / 2 + 850, 0);
+		System.out.println("Width : " + 0 + "Height : " +  Gdx.graphics.getHeight()* Zombies.WorldScale);
+		camera.position.set((float)1200 , (float) (1200), (float)0);
 		camera.update();
 		
 		//Update Box2D physics
