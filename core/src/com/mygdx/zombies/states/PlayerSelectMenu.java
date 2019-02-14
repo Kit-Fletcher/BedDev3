@@ -67,7 +67,7 @@ public class PlayerSelectMenu extends State {
 					Zombies.soundSelect.play();
 					Player.setPlayerType(1);
 					//Load next screen
-					StateManager.loadState(StateID.STAGE6, 0);
+					StateManager.loadState(StateID.STAGE1, 0);
 				}
 				else if (player2.isHover()) {
 					Zombies.soundSelect.play();
