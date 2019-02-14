@@ -323,7 +323,7 @@ public class Minigame extends State {
 		}
 		if((turret2List.size()< count2) && turret2.getHide() ) {
 			turret2.change();
-		}else if(turret2List.size() == count1 && !turret2.getHide()){
+		}else if(turret2List.size() == count2 && !turret2.getHide()){
 			turret2.change();
 		}
 		if(health <= 0) {
@@ -335,14 +335,13 @@ public class Minigame extends State {
 			waveCount += 1;
 			count1 ++;
 			count2 ++;
-			spawnCount = waveCount * 3;
+			spawnCount = waveCount * 5;
 		}
 		
 		spawnZombies();
 		
-		//Update the camera position
-		System.out.println("Width : " + 0 + "Height : " +  Gdx.graphics.getHeight()* Zombies.WorldScale);
-		camera.position.set((float)1200 , (float) (1200), (float)0);
+		//Update the camera position map size times 3/4
+		camera.position.set((float) ((int)map.getProperties().get("width") * 32 * 3/4) , (float) ((int)map.getProperties().get("height") * 32 * 3/4), (float)0);
 		camera.update();
 		
 		//Update Box2D physics
@@ -399,18 +398,32 @@ public class Minigame extends State {
 		
 		if(spawnCount > 0 && spawnDelay == 0) {
 			System.out.println("spawning");
-			System.out.println(spawnX);
-			System.out.println(spawnY);
-			switch (spawnCount % 3) {
+//			System.out.println(spawnX);
+//			System.out.println(spawnY);
+			if (spawnCount < 14) {
+				switch (spawnCount % 3) {
 				case 0 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 5, 5));
-				break;
-			case 1 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 3, 10));
-				break;
-			case 2 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 4, 15));
-				break;
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 2, 5));
+					break;
+				case 1 :
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 2, 10));
+					break;
+				case 2 :
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 2, 15));
+					break;
+				}
+			} else {
+				switch (spawnCount % 3) {
+				case 0 :
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 15, 5));
+					break;
+				case 1 :
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 15, 10));
+					break;
+				case 2 :
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 15, 15));
+					break;
+				}	
 			}
 			spawnCount --;
 			spawnDelay = 40;
