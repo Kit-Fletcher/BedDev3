@@ -340,9 +340,8 @@ public class Minigame extends State {
 		
 		spawnZombies();
 		
-		//Update the camera position
-		System.out.println("Width : " + 0 + "Height : " +  Gdx.graphics.getHeight()* Zombies.WorldScale);
-		camera.position.set((float)1200 , (float) (1200), (float)0);
+		//Update the camera position map size times 3/4
+		camera.position.set((float) ((int)map.getProperties().get("width") * 32 * 3/4) , (float) ((int)map.getProperties().get("height") * 32 * 3/4), (float)0);
 		camera.update();
 		
 		//Update Box2D physics
@@ -399,17 +398,17 @@ public class Minigame extends State {
 		
 		if(spawnCount > 0 && spawnDelay == 0) {
 			System.out.println("spawning");
-			System.out.println(spawnX);
-			System.out.println(spawnY);
-			switch (spawnCount % 3) {
-				case 0 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 5, 5));
+//			System.out.println(spawnX);
+//			System.out.println(spawnY);
+			switch ((spawnCount / 3) % 3) {
+			case 0 :
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 3, 5));
 				break;
 			case 1 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 3, 10));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 4, 10));
 				break;
 			case 2 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 4, 15));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 5, 15));
 				break;
 			}
 			spawnCount --;
