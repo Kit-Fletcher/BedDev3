@@ -89,6 +89,7 @@ public class Zombies extends Game {
 	public void create() {
 		//Initialise Box2D physics enginw
 		Box2D.init();
+		
 		//Create new random number generator
 		random = new Random();
 		
@@ -123,9 +124,11 @@ public class Zombies extends Game {
 	public void render() {
 		//Update current state of StateManager
 		stateManager.gameLoop();
+		
 		//Set default background colour
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		//Render current state of StateManager
 		stateManager.render();
 	}

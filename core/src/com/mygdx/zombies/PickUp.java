@@ -37,6 +37,7 @@ public class PickUp extends Entity {
 				isSensor = true;
 			}
 		};
+		
 		//Generate Box2D detection area from sprite
 		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, type, fixtureDef);
 		

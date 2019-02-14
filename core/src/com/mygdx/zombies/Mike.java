@@ -1,6 +1,5 @@
 package com.mygdx.zombies;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,7 +11,6 @@ import com.mygdx.zombies.states.StateManager.StateID;
 
 public class Mike extends Enemy {
 
-	
 	private Sprite armLeft;
 	private Sprite armRight;
 	private SpriteBatch spriteBatch;
@@ -48,25 +46,20 @@ public class Mike extends Enemy {
 		super.update(inLights);
 		
 		time ++;
-		//System.out.println("mike's health is " + getHealth());
-		//System.out.println("mike's timer is " + time);
-		
 		
 		//Looping hand animation timer 
 		attackStep+=3;
 		if(attackStep > 100)
 			attackStep = 0;
+		
 		//immunity timer
 		if(time == 1) {
 			setImmunity(true);
-			System.out.println("Immunity set to true");
 		} else if(time == 100) {
 			setImmunity(false);
-			System.out.println("Immunity set to false");
 		} else if(time == 200) {
 			time = 0;
 		}
-		
 		
 		//Looping timer for spawning minion zombies
 		minionSpawnStep++;
@@ -82,6 +75,7 @@ public class Mike extends Enemy {
 		//Get the position of the left and right hands
 		Vector2 leftHandPos = getLeftHandPosition();
 		Vector2 rightHandPos = getRightHandPosition();
+		
 		//Set the sprites to the hand positions
 		armLeft.setPosition(getPositionX() + leftHandPos.x, getPositionY() + leftHandPos.y);
 		armLeft.setRotation((float) angleDegrees);
@@ -121,7 +115,6 @@ public class Mike extends Enemy {
 			setNoiseTimer(Zombies.random.nextInt(1000) + 500);
 			//Play a random sound, adjusting volume based on distance to player
 			Zombies.soundMike.play(getDistanceToPlayer() < 500 ? 500-(float)getDistanceToPlayer() : 0);
-			
 		}
 	}
 	

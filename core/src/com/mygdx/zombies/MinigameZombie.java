@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.mygdx.zombies.states.Level;
 import com.mygdx.zombies.states.Minigame;
 
 /**
@@ -20,18 +19,11 @@ public class MinigameZombie extends Entity {
 	protected Sprite sprite;
 	protected double angleRadians;
 	protected double angleDegrees;
-	private double angleToPlayerRadians;
-	private Player player;
+	private boolean inLights; 
 	private SpriteBatch spriteBatch;	
-	private boolean inLights;
-	private int noiseTimer;
-	private int wanderTimer;
-	private int alertTimer;
 	private int moveCounter;
 	private double up, down, left, right;
-	private float alertSpeed;
 	private Minigame level;
-	private double distanceToPlayer;
 	private boolean exit;
 	private String map;
 
@@ -68,11 +60,6 @@ public class MinigameZombie extends Entity {
 		this.health = health;	
 		//this.player = level.getPlayer();
 		
-		//Initialise timer values
-		noiseTimer = 300;
-		wanderTimer = 100;
-		alertTimer = -1;
-		
 		//Initialise movement values
 		moveCounter = 0;
 		up = (Math.PI * 1.5);
@@ -82,8 +69,6 @@ public class MinigameZombie extends Entity {
 		exit = false;
 		map = level.path;
 		
-		//Initialise variable which affects speed depending on alert status
-		alertSpeed = 0.2f;
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 		box2dWorld.setContactListener(new CustomContactListener());
 	}
@@ -92,8 +77,6 @@ public class MinigameZombie extends Entity {
 	 * Updates position based on whether player has been detected
 	 */
 	private void move() {
-		//System.out.println(angleRadians);
-		//System.out.println(down);
 		setDirection();
 			
 		//Move Box2D body in angleRadians, accounting for speed attributes
@@ -107,7 +90,6 @@ public class MinigameZombie extends Entity {
 		
 		moveCounter ++;
 	}
-
 
 	/** Update all aspects of enemy
 	 * @param inLights - whether the player is lit by light sources
@@ -145,8 +127,8 @@ public class MinigameZombie extends Entity {
 	}
 	
 	private void setDirection() {
-		//System.out.println(moveCounter);
 		int temp = moveCounter * (int) speed;
+		
 		switch(map) {
 		case "World_One_Minigame" :
 			switch((temp < 1260) ? 0 : 
@@ -207,9 +189,11 @@ public class MinigameZombie extends Entity {
 			break;
 		}
 	}
+	
 	public Vector2 getVelocity() {
 		return body.getLinearVelocity();
 	}
+	
 	public float getSpeed() {
 		return speed;
 	}

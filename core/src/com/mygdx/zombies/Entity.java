@@ -25,11 +25,13 @@ public abstract class Entity {
 	 */
 	public void GenerateBodyRectangle(Vector2 dimens, World box2dWorld, InfoContainer.BodyID bodyID, FixtureDef fixtureDef) {
 		this.box2dWorld = box2dWorld;
+		
 		body = box2dWorld.createBody(new BodyDef() {
 			{
 				type = BodyDef.BodyType.DynamicBody;
 			}
 		});
+		
 		final PolygonShape polyShape = new PolygonShape();
 		polyShape.setAsBox(dimens.x, dimens.y);
 		fixtureDef.shape = polyShape;

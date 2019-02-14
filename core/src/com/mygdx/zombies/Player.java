@@ -88,7 +88,6 @@ public class Player extends Entity {
 		loadTextures();
 		hud = new Sprite(new Texture(Gdx.files.internal("player/heart.png")));
 		sprite = new Sprite(unequippedTexture);
-		
 	
 		//Update texture if set
 		if(weapon != null) {
@@ -108,6 +107,7 @@ public class Player extends Entity {
 				filter.categoryBits = Zombies.playerFilter;
 			}
 		};		
+		
 		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, InfoContainer.BodyID.PLAYER, fixtureDef);
 		body.setTransform(x / Zombies.PhysicsDensity, y / Zombies.PhysicsDensity, 0);
 		body.setLinearDamping(20);
@@ -157,6 +157,7 @@ public class Player extends Entity {
 			setUnequippedTexture();
 		else
 			setEquippedTexture();
+		
 		//Play equip sound
 		Zombies.soundAmmo.play();
 		Player.weapon = weapon;
@@ -232,6 +233,7 @@ public class Player extends Entity {
 		angleRads = Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(mouseCoords.x, mouseCoords.y)) + Math.PI/2;
 		angleDegrees = (float) Math.toDegrees(angleRads);
+		
 		//Update sprite rotation
 		sprite.setRotation(angleDegrees);
 	}
@@ -395,7 +397,6 @@ public class Player extends Entity {
 		//Restart current level from last entry point if health depleted
 		if(health <= 0) {
 			points -= 1000;
-			System.out.println("current health " + health);
 			StateManager.loadState(new Level(level.getPath(), level.getSpawnEntryID()));
 		}
 	}

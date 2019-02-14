@@ -8,18 +8,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.zombies.items.Projectile;
-import com.mygdx.zombies.items.RangedWeapon;
-import com.mygdx.zombies.states.Level;
 import com.mygdx.zombies.states.Minigame;
 
 public class Turret extends Entity{
 
-	
 	private float range;
 	private Sprite sprite;
 	private double angleDegrees;
@@ -49,12 +45,14 @@ public class Turret extends Entity{
 		//Add sprite
 		spriteBatch = level.getWorldBatch();
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
+		
 		//initialise turret values
 		this.range = range;
 		this.projectilePath= projectileSpritePath;
 		this.shootDelay = shootDelay;
 		this.bulletSpeed = bulletSpeed;
 		this.sound =shootSound;
+		
 		//Add box2d body
 		FixtureDef fixtureDef = new FixtureDef() {
 			{
@@ -74,9 +72,6 @@ public class Turret extends Entity{
 		this.level = level;
 		this.enemiesList = level.getEnemiesList();
 		
-		
-		//Initialise timer values
-		//Initialise variable which affects speed depending on alert status
 		sprite.setRotation((float) angleDegrees);		
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 		
@@ -94,6 +89,7 @@ public class Turret extends Entity{
 			this.use(this);
 			sprite.setRotation((float) angleDegrees);
 		}
+		
 		//Adds to the timer so shotting can be delayed
 		if(timerTicks > 0)
 			timerTicks++;
@@ -103,6 +99,7 @@ public class Turret extends Entity{
 		}
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 	}
+	
 	/**
 	 * Finds the closest zombie to the turret
 	 * @return closestZombie - the closest minigameZombie to the turret
