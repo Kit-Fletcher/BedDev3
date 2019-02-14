@@ -123,18 +123,6 @@ public class Minigame extends State {
 
 			//Added the object, using the name as an identifier
 			switch(object.getName()) {
-				case "zombie1":
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie1.png", 3, 5));
-				break;
-				
-				case "zombie2":
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie2.png", 5, 15));
-				break;
-				
-				case "zombie3":
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie3.png", 10, 5));
-				break;
-				
 				case "placer":
                     placeList.add(new Button(worldBatch, "selecter.png", x, y, ""));
                 break;
@@ -303,7 +291,21 @@ public class Minigame extends State {
 			waveCount += 1;
 			count1 ++;
 			count2 ++;
-			spawnCount = waveCount * 5;
+			switch (this.path) {
+			case "World_One_Minigame" :
+				spawnCount = waveCount * 1;
+				break;
+			case "World_Two_Minigame" :
+				spawnCount = waveCount * 2;
+				break;
+			case "World_Four_Minigame" :
+				spawnCount = waveCount * 4;
+				break;
+			case "World_Five_Minigame" :
+				spawnCount = waveCount * 5;
+				break;
+			}
+			
 		}
 		
 		spawnZombies();
@@ -370,28 +372,28 @@ public class Minigame extends State {
 		if(spawnCount > 0 && spawnDelay == 0) {
 			System.out.println("spawning");
 
-			if (spawnCount < 14) {
+			if (spawnCount < 10) {
 				switch (spawnCount % 3) {
 				case 0 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 2, 5));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 1, 5));
 					break;
 				case 1 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 2, 10));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 1, 10));
 					break;
 				case 2 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 2, 15));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 1, 15));
 					break;
 				}
 			} else {
 				switch (spawnCount % 3) {
 				case 0 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 15, 5));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 10, 5));
 					break;
 				case 1 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 15, 10));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 10, 10));
 					break;
 				case 2 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 15, 15));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 10, 15));
 					break;
 				}	
 			}

@@ -151,9 +151,11 @@ public class MinigameZombie extends Entity {
 		
 		case "World_Two_Minigame" :
 			switch((temp < 440) ? 0 : 
-					(temp >= 440  && temp < 1700) ? 1 : 
-					(temp >= 1700  && temp < 2800) ? 2 :
-					(temp >= 2800  && temp < 2970) ? 3 : 4) {
+					(temp >= 440  && temp < 1900) ? 1 : 
+					(temp >= 1900  && temp < 2900) ? 2 :
+					(temp >= 2900  && temp < 3200) ? 3 :
+					(temp >= 3200  && temp < 3300) ? 4 :
+					(temp >= 3300  && temp < 3400) ? 5 : 6) {
 			case 0 :
 				angleRadians = right;
 				break;
@@ -167,25 +169,62 @@ public class MinigameZombie extends Entity {
 				angleRadians = up;
 				break;
 			case 4 :
+				angleRadians = right;
+				break;
+			case 5 :
+				angleRadians = up;
+				break;
+			case 6 :
 				exit = true;
 				break;
 			}
 		break;
 
 		case "World_Four_Minigame" :
-			switch(moveCounter * (int) speed) {
+			switch((temp < 275) ? 0 : 
+				(temp >= 275  && temp < 875) ? 1 : 
+				(temp >= 875  && temp < 1400) ? 2 :
+				(temp >= 1400  && temp < 2600) ? 3 :
+				(temp >= 2600  && temp < 3000) ? 4 : 5) {
 			case 0 :
 				angleRadians = down;
 				break;
+			case 1 : 
+				angleRadians = right;
+				break;
+			case 2 :
+				angleRadians = down;
+				break;
+			case 3 :
+				angleRadians = left;
+				break;
+			case 4 :
+				angleRadians = up;
+				break;
+			case 5 :
+				exit = true;
+				break;
 			}
+			
 		break;
 		
 		case "World_Five_Minigame" :
-			switch(moveCounter * (int) speed) {
+			switch((temp < 1160) ? 0 : 
+				(temp >= 1160  && temp < 2600) ? 1 : 
+				(temp >= 2500  && temp < 3500) ? 2 : 3) {
 			case 0 :
 				angleRadians = down;
 				break;
-			}
+			case 1 : 
+				angleRadians = left;
+				break;
+			case 2 :
+				angleRadians = up;
+				break;
+			case 3 :
+				exit = true;
+				break;
+			}	
 			break;
 		}
 	}

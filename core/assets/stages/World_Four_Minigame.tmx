@@ -379,26 +379,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="13" name="Objects">
-  <object id="27" name="zombie2" x="416" y="282">
-   <point/>
-  </object>
-  <object id="28" name="zombie3" x="1028" y="152">
-   <point/>
-  </object>
-  <object id="29" name="zombie3" x="668" y="780">
-   <point/>
-  </object>
-  <object id="30" name="zombie1" x="340" y="736">
-   <point/>
-  </object>
-  <object id="31" name="zombie1" x="152" y="598">
-   <point/>
-  </object>
-  <object id="32" name="zombie1" x="1198" y="570">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="13" name="Objects"/>
  <objectgroup id="8" name="Obstacles">
   <object id="1" name="water3" x="782" y="974" width="816" height="624"/>
   <object id="2" name="water1" x="2" y="974" width="560" height="620"/>
@@ -444,17 +425,6 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Entries">
-  <object id="26" name="entry" x="666" y="72">
-   <point/>
-  </object>
- </objectgroup>
- <objectgroup id="11" name="Gates">
-  <object id="38" name="gate" type="Gate" x="65" y="449" width="63.3333" height="64.6667">
-   <properties>
-    <property name="Destination" value="STAGE5"/>
-    <property name="EntryID" type="int" value="0"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup id="10" name="Entries"/>
+ <objectgroup id="11" name="Gates"/>
 </map>

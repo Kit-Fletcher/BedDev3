@@ -334,47 +334,7 @@
   <object id="22" name="EastWall" x="1538" y="-4" width="60" height="1284"/>
   <object id="23" name="WestWall" x="2" y="452" width="58" height="826"/>
  </objectgroup>
- <objectgroup id="16" name="Objects">
-  <object id="24" name="zombie3" x="1260" y="648">
-   <point/>
-  </object>
-  <object id="25" name="zombie1" x="1036" y="888">
-   <point/>
-  </object>
-  <object id="26" name="zombie2" x="680" y="546">
-   <point/>
-  </object>
-  <object id="27" name="zombie1" x="794" y="1126">
-   <point/>
-  </object>
-  <object id="28" name="zombie2" x="652" y="1130">
-   <point/>
-  </object>
-  <object id="29" name="zombie2" x="442" y="1006">
-   <point/>
-  </object>
-  <object id="30" name="zombie1" x="234" y="892">
-   <point/>
-  </object>
-  <object id="31" name="zombie1" x="1416" y="842">
-   <point/>
-  </object>
-  <object id="32" name="zombie3" x="1454" y="332">
-   <point/>
-  </object>
-  <object id="33" name="zombie1" x="416" y="536">
-   <point/>
-  </object>
-  <object id="34" name="zombie1" x="156" y="640">
-   <point/>
-  </object>
-  <object id="35" name="zombie3" x="140" y="1000">
-   <point/>
-  </object>
-  <object id="36" name="zombie1" x="1302" y="1102">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="16" name="Objects"/>
  <objectgroup id="12" name="Lights">
   <object id="4" name="street" x="1088" y="674">
    <point/>
@@ -401,17 +361,6 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="14" name="Entries">
-  <object id="38" name="entry" x="1516" y="924">
-   <point/>
-  </object>
- </objectgroup>
- <objectgroup id="15" name="Gates">
-  <object id="39" name="gate" type="Gate" x="127.97" y="382.515" width="63.3333" height="64.6667">
-   <properties>
-    <property name="Destination" value="STAGE6"/>
-    <property name="EntryID" type="int" value="0"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup id="14" name="Entries"/>
+ <objectgroup id="15" name="Gates"/>
 </map>
