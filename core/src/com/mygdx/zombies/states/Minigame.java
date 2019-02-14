@@ -323,7 +323,7 @@ public class Minigame extends State {
 		}
 		if((turret2List.size()< count2) && turret2.getHide() ) {
 			turret2.change();
-		}else if(turret2List.size() == count1 && !turret2.getHide()){
+		}else if(turret2List.size() == count2 && !turret2.getHide()){
 			turret2.change();
 		}
 		if(health <= 0) {
@@ -400,15 +400,15 @@ public class Minigame extends State {
 			System.out.println("spawning");
 //			System.out.println(spawnX);
 //			System.out.println(spawnY);
-			switch ((spawnCount / 3) % 3) {
+			switch (spawnCount % 3) {
 			case 0 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 3, 5));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 2, 5));
 				break;
 			case 1 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 4, 10));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 2, 10));
 				break;
 			case 2 :
-				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 5, 15));
+				enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 2, 15));
 				break;
 			}
 			spawnCount --;
