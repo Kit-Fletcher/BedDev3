@@ -1,14 +1,12 @@
 package com.mygdx.zombies.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.mygdx.zombies.Zombies;
-import com.mygdx.zombies.states.State;
+
 
 /**
  * Button class with two variants: 1) standard button   2) updating mode button
@@ -22,11 +20,9 @@ public class Button {
 	private int positionY;
 	private String text;
 	private String path = null;
-	private TiledMap map;
 	private int mode;
 	private boolean hide;
 	private String[] modeTextArray;
-	private OrthographicCamera camera;
 
 	/**
 	 * Constructor for the standard button variant
@@ -39,13 +35,19 @@ public class Button {
 		this.text = text;	
 		setup(spriteBatch, x, y);
 	}
-	
-	public Button(SpriteBatch spriteBatch,String path,OrthographicCamera camera, int x, int y, String text) {
+	/**
+	 * Constructor for minigame button variants
+	 * @param spriteBatch - SpriteBatch to draw the button to
+	 * @param path - file path of button sprite to use 
+	 * @param x - the x position of the button
+	 * @param y - the y position of the button
+	 * @param text - any text to be displayed on the button
+	 */
+	public Button(SpriteBatch spriteBatch,String path, int x, int y, String text) {
 		this.text = text;	
 		
 		setup(spriteBatch,path, x, y);
 		this.path = path;
-		this.camera = camera;
 		
 	}
 	
@@ -82,15 +84,23 @@ public class Button {
 		positionX = x;
 		positionY = y;
 	}
-	
+	/**
+	 * setup sprites
+	 * @param spriteBatch -  the spriteBatch to draw the button to
+	 * @param path - the file path of button sprite to use 
+	 * @param x - the x position of the button
+	 * @param y - the y position of the button
+	 */
 	private void setup(SpriteBatch spriteBatch,String path, int x, int y) {
 		this.spriteBatch = spriteBatch;
 		//Load textures and set up sprites
 		if(path == "") {
+			//if no path then use a regular type button
 			mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/button.png")));
 			mainSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
 			hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hoverbutton.png")));
 			hoverSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
+			// Calculates x so the buttons appear in nice places on screen
 			positionX = (int) (x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth());
 		}else {
 			mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/" + path)));
@@ -141,16 +151,12 @@ public class Button {
 		if(!hide) {
 			float adjustedMouseX;
 			float adjustedMouseY;
-			float screenScale = Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth();
 			//Return if the mouse is in the button rectangle
 			if(this.path != null){
+				//Only called during minigame (Zoomed out map)
+				//adjusts the mouse to fit zoom by making the mouse and maps coordinates sync up
 				adjustedMouseX = (Gdx.input.getX()-(Gdx.graphics.getWidth()/2 -(686/2)))*3.5f;
 				adjustedMouseY = (Gdx.graphics.getHeight()- Gdx.input.getY()-(Gdx.graphics.getHeight()/2 -(686/2)))*3.5f;
-//				System.out.println("hi");
-//				adjustedMouseX *= Zombies.WorldScale;
-//				adjustedMouseX +=
-//				adjustedMouseY *= Zombies.WorldScale;
-//				adjustedMouseY +=
 			}else{
 			// Adjust mouse coordinates in case the window is resized
 				adjustedMouseX = Gdx.input.getX() * Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth();
@@ -179,6 +185,7 @@ public class Button {
 			if(path==null) {
 				Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 148) - (text.length() * 14)), positionY + 69);
 			}else {
+				//accounts for the bigger buttons in minigames
 				Zombies.mainFont.draw(spriteBatch, text, (float) ((positionX + 175) - (text.length() * 14)), positionY + 69);
 			}
 		}
@@ -191,13 +198,22 @@ public class Button {
 		mainSprite.getTexture().dispose();
 		hoverSprite.getTexture().dispose();
 	}
+	
+	/**
+	 * swaps the button from hidden to visible and vice versa
+	 */
 	public void change() {
 		hide = !hide;
 	}
 	
+	/**
+	 * 
+	 * @return hide - the value representing whether the button is hidden
+	 */
 	public boolean getHide() {
 		return hide;
 	}
+	//return sprite values
 	public int getX() {
 		return (int) mainSprite.getX();
 	}

@@ -105,8 +105,8 @@ public class Minigame extends State {
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		box2dWorld.setContactListener(new CustomContactListener());
-        turret1 = new Button(worldBatch,"", camera, (int)((( 437/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:1");
-        turret2 = new Button(worldBatch,"", camera, (int)((( 437*3/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:2");
+        turret1 = new Button(worldBatch,"", (int)((( 437/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:1");
+        turret2 = new Button(worldBatch,"", (int)((( 437*3/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:2");
         turret1.change();
         turret2.change();
 		
@@ -149,7 +149,7 @@ public class Minigame extends State {
 //					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
 //				break;
 				case "placer":
-                    placeList.add(new Button(worldBatch, "selecter.png",camera, x, y, ""));
+                    placeList.add(new Button(worldBatch, "selecter.png", x, y, ""));
                 break;
 				default:
 					System.err.println("Error importing stage: unrecognised object");
