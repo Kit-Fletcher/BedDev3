@@ -45,6 +45,7 @@ public class Minigame extends State {
 	private int waveCount, spawnX, spawnY, spawnCount, spawnDelay;
 	private Button turretType1Btn, turretType2Btn;
 	boolean turret1BtnClicked = false;
+	boolean turret2BtnClicked = false;
 	int turret1AmountAllowed = 1;
 	int turret2AmountAllowed = -2; //starts at minus 2 so that it becomes available on wave 3 
 	private int health;
@@ -245,13 +246,14 @@ public class Minigame extends State {
 		//Buttons in screen add if it is hidden or not
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && Gdx.input.justTouched()) {
 			
-			if(turretType1Btn.isHover() && turretType1List.size()< turret1AmountAllowed) {
+			if(turretType1Btn.isHover() && turretType1List.size()< turret1AmountAllowed && !turret2BtnClicked) {
 				turret1BtnClicked = true;
 				for (int i = 0; i < placeList.size(); i++)
 					placeList.get(i).changeHidden();
 			
 			}
 			if(turretType2Btn.isHover() && turretType2List.size()< turret2AmountAllowed && !turret1BtnClicked) {
+				turret2BtnClicked = true;
 				for (int i = 0; i < placeList.size(); i++)
 					placeList.get(i).changeHidden();
 			
@@ -262,8 +264,9 @@ public class Minigame extends State {
 					if(turret1BtnClicked) {
 						turretType1List.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot,1000));
 						turret1BtnClicked= false;
-					}else {
+					}else if(turret2BtnClicked) {
 						turretType2List.add(new Turret(this, placeList.get(i).getX() +placeList.get(i).getWidth()/2, placeList.get(i).getY()+placeList.get(i).getWidth()/2, "minigame/turret2.png", 10, "laser.png", 50, Zombies.soundLaser,500));
+						turret2BtnClicked = false;
 					}
 					placeList.remove(i);
 					i --;
