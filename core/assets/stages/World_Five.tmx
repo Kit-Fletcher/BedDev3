@@ -403,7 +403,7 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="Entries">
-  <object id="41" name="entry" x="1508" y="994">
+  <object id="41" name="entry" type="Entry" x="1508" y="994">
    <properties>
     <property name="EntryID" type="int" value="0"/>
    </properties>

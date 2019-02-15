@@ -283,7 +283,7 @@ public class Minigame extends State {
 			turret2.change();
 		}
 		if(health <= 0) {
-			StateManager.loadState(returnStage,-1);
+			StateManager.loadState(returnStage, 0);
 		}
 		
 		//Check if wave is finished
