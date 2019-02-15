@@ -414,7 +414,7 @@
   <object id="39" name="gate" type="Gate" x="127.97" y="382.515" width="63.3333" height="64.6667">
    <properties>
     <property name="Destination" value="STAGE6"/>
-    <property name="EntryID" type="int" value="-1"/>
+    <property name="EntryID" type="int" value="0"/>
    </properties>
   </object>
   <object id="40" name="gate" type="Gate" x="161.333" y="1152.67" width="63.3333" height="64.6667">

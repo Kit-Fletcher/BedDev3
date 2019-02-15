@@ -460,7 +460,7 @@
   <object id="38" name="gate" type="Gate" x="65" y="449" width="63.3333" height="64.6667">
    <properties>
     <property name="Destination" value="STAGE5"/>
-    <property name="EntryID" type="int" value="-1"/>
+    <property name="EntryID" type="int" value="0"/>
    </properties>
   </object>
   <object id="39" name="gate" type="Gate" x="1152.33" y="287" width="63.3333" height="64.6667">
