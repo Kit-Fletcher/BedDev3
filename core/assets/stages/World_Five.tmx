@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="42">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="44">
  <tileset firstgid="1" source="Assets/Tileset.tsx"/>
  <tileset firstgid="1041" source="Assets/Roads.tsx"/>
  <tileset firstgid="14523" source="exit.tsx"/>
@@ -375,6 +375,12 @@
   <object id="36" name="zombie1" x="1302" y="1102">
    <point/>
   </object>
+  <object id="42" name="powerUpMaxHealth" x="1219.76" y="295.758">
+   <point/>
+  </object>
+  <object id="43" name="powerUpShield" x="454.545" y="1115.15">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="12" name="Lights">
   <object id="4" name="street" x="1088" y="674">
@@ -403,7 +409,7 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="Entries">
-  <object id="41" name="entry" type="Entry" x="1508" y="994">
+  <object id="41" name="entry" x="1508" y="994">
    <properties>
     <property name="EntryID" type="int" value="0"/>
    </properties>
@@ -414,7 +420,7 @@
   <object id="39" name="gate" type="Gate" x="127.97" y="382.515" width="63.3333" height="64.6667">
    <properties>
     <property name="Destination" value="STAGE6"/>
-    <property name="EntryID" type="int" value="0"/>
+    <property name="EntryID" type="int" value="-1"/>
    </properties>
   </object>
   <object id="40" name="gate" type="Gate" x="161.333" y="1152.67" width="63.3333" height="64.6667">

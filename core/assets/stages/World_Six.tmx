@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="49">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="53">
  <tileset firstgid="1" source="Assets/Tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50">
   <data encoding="csv">
@@ -375,6 +375,18 @@
  </objectgroup>
  <objectgroup id="10" name="Objects">
   <object id="47" name="mike" x="784" y="730">
+   <point/>
+  </object>
+  <object id="49" name="powerUpSpeed" x="372.727" y="1103.03">
+   <point/>
+  </object>
+  <object id="50" name="powerUpShield" x="1439.39" y="451.515">
+   <point/>
+  </object>
+  <object id="51" name="powerUpMaxHealth" x="1445.45" y="1218.18">
+   <point/>
+  </object>
+  <object id="52" name="powerUpHealth" x="103.03" y="1230.3">
    <point/>
   </object>
  </objectgroup>
