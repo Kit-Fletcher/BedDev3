@@ -10,8 +10,7 @@ import com.mygdx.zombies.states.Level;
 import com.mygdx.zombies.states.Minigame;
 
 /**
- * Generic enemy class. Has hearing and sight player detection mechanisms.
- * Has passive mode and an aggressive following mode for when player is detected
+ * Generic minigame enemy, doesn't respond to player follows a set path through the map.
  */
 public class MinigameZombie extends Entity {
 	
@@ -20,18 +19,11 @@ public class MinigameZombie extends Entity {
 	protected Sprite sprite;
 	protected double angleRadians;
 	protected double angleDegrees;
-	private double angleToPlayerRadians;
-	private Player player;
-	private SpriteBatch spriteBatch;	
 	private boolean inLights;
-	private int noiseTimer;
-	private int wanderTimer;
-	private int alertTimer;
+	private SpriteBatch spriteBatch;	
 	private int moveCounter;
 	private double up, down, left, right;
-	private float alertSpeed;
 	private Minigame level;
-	private double distanceToPlayer;
 	private boolean exit;
 	private String map;
 
@@ -66,13 +58,7 @@ public class MinigameZombie extends Entity {
 		this.level = level;
 		this.speed = speed;
 		this.health = health;	
-		//this.player = level.getPlayer();
-		
-		//Initialise timer values
-		noiseTimer = 300;
-		wanderTimer = 100;
-		alertTimer = -1;
-		
+	
 		//Initialise movement values
 		moveCounter = 0;
 		up = (Math.PI * 1.5);
@@ -83,17 +69,14 @@ public class MinigameZombie extends Entity {
 		map = level.path;
 		
 		//Initialise variable which affects speed depending on alert status
-		alertSpeed = 0.2f;
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 		box2dWorld.setContactListener(new CustomContactListener());
 	}
 
 	/**
-	 * Updates position based on whether player has been detected
+	 * Updates position based on direction chosen and speed
 	 */
 	private void move() {
-		//System.out.println(angleRadians);
-		//System.out.println(down);
 		setDirection();
 			
 		//Move Box2D body in angleRadians, accounting for speed attributes
@@ -144,8 +127,12 @@ public class MinigameZombie extends Entity {
 			getInfo().flagForDeletion();
 	}
 	
+	/** Sets the direction of the zombie
+	 *  Depending on how long the zombie has been moving for, its speed and the map
+	 *  works out if the zombie needs to change direction to reach the end.
+	 *  If the zombie has reached the end sets exit to be true to flag for removal.
+	 */
 	private void setDirection() {
-		//System.out.println(moveCounter);
 		int temp = moveCounter * (int) speed;
 		switch(map) {
 		case "World_One_Minigame" :
@@ -207,9 +194,11 @@ public class MinigameZombie extends Entity {
 			break;
 		}
 	}
+	
 	public Vector2 getVelocity() {
 		return body.getLinearVelocity();
 	}
+	
 	public float getSpeed() {
 		return speed;
 	}

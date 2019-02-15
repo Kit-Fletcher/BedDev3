@@ -22,7 +22,7 @@ public class Mike extends Enemy {
 	private float time;
 
 	/**
-	 * Constructor for the first boss mob
+	 * Constructor for the mike boss mob
 	 * @param level - the level instance to spawn the mob in
 	 * @param x - the x spawn coordinate
 	 * @param y - the y spawn coordinate
@@ -47,16 +47,13 @@ public class Mike extends Enemy {
 	public void update(boolean inLights) {
 		super.update(inLights);
 		
-		time ++;
-		//System.out.println("mike's health is " + getHealth());
-		//System.out.println("mike's timer is " + time);
-		
-		
 		//Looping hand animation timer 
 		attackStep+=3;
 		if(attackStep > 100)
 			attackStep = 0;
+		
 		//immunity timer
+		time ++;
 		if(time == 1) {
 			setImmunity(true);
 			System.out.println("Immunity set to true");
@@ -66,7 +63,6 @@ public class Mike extends Enemy {
 		} else if(time == 200) {
 			time = 0;
 		}
-		
 		
 		//Looping timer for spawning minion zombies
 		minionSpawnStep++;
@@ -82,6 +78,7 @@ public class Mike extends Enemy {
 		//Get the position of the left and right hands
 		Vector2 leftHandPos = getLeftHandPosition();
 		Vector2 rightHandPos = getRightHandPosition();
+		
 		//Set the sprites to the hand positions
 		armLeft.setPosition(getPositionX() + leftHandPos.x, getPositionY() + leftHandPos.y);
 		armLeft.setRotation((float) angleDegrees);

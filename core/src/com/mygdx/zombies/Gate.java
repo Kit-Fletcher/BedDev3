@@ -29,6 +29,7 @@ public class Gate extends Entity {
 				isSensor = true;
 			}
 		};
+		
 		//Generate the Box2D detection area
 		GenerateBodyRectangle(new Vector2(rect.width / Zombies.PhysicsDensity, rect.height / Zombies.PhysicsDensity),
 				world, InfoContainer.BodyID.GATE, fixtureDef);	

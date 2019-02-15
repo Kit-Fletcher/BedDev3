@@ -41,6 +41,9 @@ public class Boss1 extends Enemy {
 		minionSpawnStep = 0;
 	}
 	
+	/** Update all aspects of boss1
+	 * @param inLights - whether the player is lit by light sources
+	 */
 	@Override
 	public void update(boolean inLights) {
 		super.update(inLights);
@@ -64,6 +67,7 @@ public class Boss1 extends Enemy {
 		//Get the position of the left and right hands
 		Vector2 leftHandPos = getLeftHandPosition();
 		Vector2 rightHandPos = getRightHandPosition();
+		
 		//Set the sprites to the hand positions
 		armLeft.setPosition(getPositionX() + leftHandPos.x, getPositionY() + leftHandPos.y);
 		armLeft.setRotation((float) angleDegrees);
@@ -101,7 +105,7 @@ public class Boss1 extends Enemy {
 		super.dispose();
 		armLeft.getTexture().dispose();
 		armRight.getTexture().dispose();
-		//Load win screen now this enemy is killed
+		//Load stage 4 screen now this boss has been defeated
 		StateManager.loadState(StateID.STAGE4);
 	}
 		

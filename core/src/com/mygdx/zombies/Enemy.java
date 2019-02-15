@@ -54,6 +54,7 @@ public class Enemy extends Entity {
 				restitution = 1f;
 			}
 		};
+		
 		GenerateBodyFromSprite(level.getBox2dWorld(), sprite, InfoContainer.BodyID.ZOMBIE, fixtureDef);
 		body.setTransform(x / Zombies.PhysicsDensity, y / Zombies.PhysicsDensity, 0);
 		body.setLinearDamping(4);
@@ -170,6 +171,7 @@ public class Enemy extends Entity {
 		this.health = health;
 		//Remove enemy if health below zero
 		if(health <= 0) {
+			//Award points to the player based on health when an enemy is killed
 			player.gainPoints(10 * health);
 			getInfo().flagForDeletion();
 		}
