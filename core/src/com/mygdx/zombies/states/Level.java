@@ -72,7 +72,6 @@ public class Level extends State {
 		pickUpsList = new ArrayList<PickUp>();
 		npcsList = new ArrayList<NPC>();
 		gatesList = new ArrayList<Gate>();
-			
 
 		String mapFile = String.format("stages/%s.tmx", path);
 
@@ -257,7 +256,6 @@ public class Level extends State {
 				break;
 					
 				default:
-					System.out.println(object.getName());
 					System.err.println("Error importing stage: unrecognised object");
 				break;
 			}
@@ -382,9 +380,11 @@ public class Level extends State {
 		return box2dWorld;
 	}
 
+	/**
+	 * Method to update everything in the state
+	 */
 	@Override
 	public void update() {
-		//Method to update everything in the state
 		
 		//Update the camera position
 		camera.position.set(player.getPositionX(), player.getPositionY(), 0);

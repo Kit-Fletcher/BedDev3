@@ -15,7 +15,7 @@ import com.mygdx.zombies.states.StateManager;
  */
 public class CustomContactListener implements ContactListener {
 	
-	/*
+	/**
 	 * Collision event method called when Box2D objects collide
 	 */
 	@Override

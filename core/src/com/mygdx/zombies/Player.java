@@ -413,7 +413,7 @@ public class Player extends Entity {
 		return charDamage;
 	}
 	
-	/*
+	/**
 	 * Dispose of the player instance, clearing the memory
 	 */
 	public void dispose() {

@@ -23,14 +23,14 @@ public class Turret extends Entity{
 	private ArrayList<MinigameZombie> enemiesList;
 	private SpriteBatch spriteBatch;	
 	private Minigame level;
-	private boolean shoot = true;
+	private boolean zombieToShoot = true;
 	protected static boolean firing;
-	private String projectilePath;
+	private String projectileSpritePath;
 	private float bulletSpeed;
 	private Sound sound;
-	
 	protected int shootDelay;
 	protected int timerTicks;
+	
 	/**
 	 * Constructor for generic turret class
 	 * @param level - the level instance to spawn the enemy mob in
@@ -48,7 +48,7 @@ public class Turret extends Entity{
 		
 		//initialise turret values
 		this.range = range;
-		this.projectilePath= projectileSpritePath;
+		this.projectileSpritePath= projectileSpritePath;
 		this.shootDelay = shootDelay;
 		this.bulletSpeed = bulletSpeed;
 		this.sound =shootSound;
@@ -77,6 +77,10 @@ public class Turret extends Entity{
 		
 	}
 	
+	/**
+	 * updates rotation, position, shooting timers and zombie positions
+	 * fires a projectile at the nearest zombie
+	 */
 	public void update() {
 		//Checks there are zombies to shoot
 		if(enemiesList!=null) {
@@ -86,7 +90,8 @@ public class Turret extends Entity{
 			angleDegrees = (double)Math.toDegrees(angleToZombieRadians); 
 			sprite.setRotation((float) angleDegrees);
 			
-			this.use(this);
+			fire();
+			
 			sprite.setRotation((float) angleDegrees);
 		}
 		
@@ -108,17 +113,19 @@ public class Turret extends Entity{
 		MinigameZombie closestZombie = null;
 		double distance = 0;
 		double newDistance;
+		
 		for (int i = 0; i < enemiesList.size(); i++) {
 			newDistance =Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
 					new Vector2(enemiesList.get(i).getPositionX(), enemiesList.get(i).getPositionY()));
 			if( i ==0) {
 				distance = newDistance;
 				closestZombie = enemiesList.get(i);
-			}else if(Math.abs(newDistance)<Math.abs(distance)) {
+			}else if(Math.abs(newDistance) < Math.abs(distance)) {
 				// updates the closest zombie from those checked
 				closestZombie = enemiesList.get(i);
 			}
 		}
+		
 		if(distance < range) {
 			return closestZombie;
 		}
@@ -133,7 +140,7 @@ public class Turret extends Entity{
 	 */
 	private double getAngleToZombie(MinigameZombie zombie) {
 		if(zombie != null) {
-			shoot = true;
+			zombieToShoot = true;
 			double distance = Zombies.distanceBetween(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(zombie.getPositionX(), zombie.getPositionY()));
 			distance = Math.abs(1/Math.cos(Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
@@ -143,7 +150,7 @@ public class Turret extends Entity{
 				new Vector2(zombie.getPositionX() + offset* (float)distance * zombie.getVelocity().x, zombie.getPositionY() + offset *  (float) distance * zombie.getVelocity().y ));
 		
 		}
-		shoot = false;
+		zombieToShoot = false;
 		return angleToZombieRadians;
 	}
 	public int getPositionX() {
@@ -174,12 +181,12 @@ public class Turret extends Entity{
 	 * Fires a projectile for the turret, if weapon is loaded
 	 * @param turret The firing turret
 	 */
-	public void use(Turret turret) {
-		if(timerTicks == 0 & shoot) {
+	public void fire() {
+		if(timerTicks == 0 & zombieToShoot) {
 			timerTicks++;
 			// add projectile to the current level
-			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)turret.getPositionX(), (int)turret.getPositionY(),
-					(float)(turret.getAngleRadians() + Math.PI ), projectilePath, bulletSpeed));
+			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)getPositionX(), (int)getPositionY(),
+					(float)(getAngleRadians() + Math.PI ), projectileSpritePath, bulletSpeed));
 			firing = true;
 			sound.play();
 		}

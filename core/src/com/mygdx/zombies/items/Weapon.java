@@ -6,7 +6,6 @@ import com.mygdx.zombies.states.Level;
  * Abstract weapon interface for both ranged and melee weapons
  */
 public interface Weapon {
-	
 
 	public abstract void use();
 	

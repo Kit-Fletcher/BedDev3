@@ -34,7 +34,7 @@ public class CreditsMenu extends State {
 		back.render();
 		//Draw title and credits text to the screen
 		Zombies.titleFont.draw(UIBatch, "Credits", 500, 700);
-		Zombies.creditsFont.draw(UIBatch, "This game was created by Yeezy Games"
+		Zombies.creditsFont.draw(UIBatch, "This game was created by Yeezy Games, \ncontinued by BedDev"
 				+ "\nDevelopment Team:"
 				+ "\nGurveer Gawera, Billy Macleod, Rafee Jenkins,"
 				+ "\nAndy McIsaac, Henry Gray and David Gillman.", 150, 550);

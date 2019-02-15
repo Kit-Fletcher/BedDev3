@@ -8,7 +8,7 @@ import com.mygdx.zombies.Zombies;
 
 
 /**
- * Button class with two variants: 1) standard button   2) updating mode button
+ * Button class with two variants: 1) standard button   2) updating mode button 3) Minigame buttons
  */
 public class Button {
 
@@ -20,7 +20,7 @@ public class Button {
 	private String text;
 	private String path = null;
 	private int mode;
-	private boolean hide;
+	private boolean hidden;
 	private String[] modeTextArray;
 
 	/**
@@ -34,8 +34,9 @@ public class Button {
 		this.text = text;	
 		setup(spriteBatch, x, y);
 	}
+	
 	/**
-	 * Constructor for minigame button variants
+	 * Constructor for minigame button variant
 	 * @param spriteBatch - SpriteBatch to draw the button to
 	 * @param path - file path of button sprite to use 
 	 * @param x - the x position of the button
@@ -83,6 +84,7 @@ public class Button {
 		positionX = x;
 		positionY = y;
 	}
+	
 	/**
 	 * setup sprites
 	 * @param spriteBatch -  the spriteBatch to draw the button to
@@ -92,6 +94,7 @@ public class Button {
 	 */
 	private void setup(SpriteBatch spriteBatch,String path, int x, int y) {
 		this.spriteBatch = spriteBatch;
+		
 		//Load textures and set up sprites
 		if(path == "") {
 			//if no path then use a regular type button
@@ -99,7 +102,8 @@ public class Button {
 			mainSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
 			hoverSprite = new Sprite(new Texture(Gdx.files.internal("minigame/hoverbutton.png")));
 			hoverSprite.setPosition(x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth(), y);
-			// Calculates x so the buttons appear in nice places on screen
+			
+			// modify x position so buttons appear evenly on screen
 			positionX = (int) (x- (mainSprite.getWidth()/2)* Zombies.InitialWindowWidth / (float) Gdx.graphics.getWidth());
 		}else {
 			mainSprite = new Sprite(new Texture(Gdx.files.internal("minigame/" + path)));
@@ -109,12 +113,9 @@ public class Button {
 			positionX = x;
 			
 		}
-		positionY = y;
-		
+		positionY = y;	
 		
 	}
-
-
 	
 	/**
 	 * Go to the next mode and display the associated text string, only works if updating variant
@@ -147,7 +148,7 @@ public class Button {
 	 * @return true if the mouse is hovering over the button
 	 */
 	public boolean isHover() {
-		if(!hide) {
+		if(!hidden) {
 			float adjustedMouseX;
 			float adjustedMouseY;
 			//Return if the mouse is in the button rectangle
@@ -174,7 +175,7 @@ public class Button {
 	 * Draw the button to the screen
 	 */
 	public void render() {	
-		if(!hide) {
+		if(!hidden) {
 			//Draw sprite
 			if (isHover())
 				hoverSprite.draw(spriteBatch);
@@ -201,16 +202,16 @@ public class Button {
 	/**
 	 * swaps the button from hidden to visible and vice versa
 	 */
-	public void change() {
-		hide = !hide;
+	public void changeHidden() {
+		hidden = !hidden;
 	}
 	
 	/**
 	 * 
 	 * @return hide - the value representing whether the button is hidden
 	 */
-	public boolean getHide() {
-		return hide;
+	public boolean getHidden() {
+		return hidden;
 	}
 	//return sprite values
 	public int getX() {

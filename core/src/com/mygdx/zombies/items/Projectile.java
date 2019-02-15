@@ -17,7 +17,6 @@ public class Projectile extends Entity {
 
 	private SpriteBatch spriteBatch;
 	private Sprite sprite;
-	private World box2DWorld;
 
 	/**
 	 * Constructor for the projectile
@@ -35,7 +34,6 @@ public class Projectile extends Entity {
 		
 		//Add sprite
 		this.spriteBatch = worldBatch;
-		this.box2DWorld = box2DWorld;
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
 		sprite.setRotation((float)Math.toDegrees(angle));
 
