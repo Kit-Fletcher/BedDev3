@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.zombies.Entity;
 import com.mygdx.zombies.InfoContainer;
 import com.mygdx.zombies.Zombies;
-import com.mygdx.zombies.states.Level;
 
 /**
  * Projectile class for moving bullets, missiles, arrows etc. which inflict damage on enemies

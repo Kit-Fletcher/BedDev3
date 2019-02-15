@@ -56,6 +56,7 @@ public class CustomContactListener implements ContactListener {
 			case GATE:
 				if(bType == InfoContainer.BodyID.PLAYER) {
 					Gate gate = (Gate)a.getObj();
+					System.out.println("gate entry id : " + gate.getEntryID());
 					StateManager.loadState(gate.getDestination(), gate.getEntryID());
 					System.out.println("Player has contacted gate");
 				}

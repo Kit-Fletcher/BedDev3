@@ -15,26 +15,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.zombies.Boss1;
 import com.mygdx.zombies.CustomContactListener;
-import com.mygdx.zombies.Enemy;
 import com.mygdx.zombies.Entity;
 import com.mygdx.zombies.Gate;
-import com.mygdx.zombies.InfoContainer;
-import com.mygdx.zombies.NPC;
-import com.mygdx.zombies.PickUp;
-import com.mygdx.zombies.Player;
 import com.mygdx.zombies.Turret;
 import com.mygdx.zombies.Zombies;
 import com.mygdx.zombies.MinigameZombie;
-import com.mygdx.zombies.items.MeleeWeapon;
-import com.mygdx.zombies.items.PowerUp;
 import com.mygdx.zombies.items.Projectile;
-import com.mygdx.zombies.items.RangedWeapon;
-import com.mygdx.zombies.states.StateManager.StateID;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -73,6 +62,7 @@ public class Minigame extends State {
 	public Minigame(String path, int spawnX, int spawnY, int health,StateManager.StateID returnStage) {
 		super();
 		box2dWorld = new World(new Vector2(0, 0), true);
+		
 		this.path = path;
 		this.returnStage = returnStage;
 		
@@ -81,6 +71,7 @@ public class Minigame extends State {
 		turret1List = new ArrayList<Turret>();
 		turret2List = new ArrayList<Turret>();
 		placeList = new ArrayList<Button>();
+		
 		String mapFile = String.format("stages/%s.tmx", path);
 		map = new TmxMapLoader().load(mapFile);
 		renderer = new OrthogonalTiledMapRenderer(map, Zombies.WorldScale);
@@ -105,8 +96,8 @@ public class Minigame extends State {
 		camera = new OrthographicCamera();
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		box2dWorld.setContactListener(new CustomContactListener());
-        turret1 = new Button(worldBatch,"", camera, (int)((( 437/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:1");
-        turret2 = new Button(worldBatch,"", camera, (int)((( 437*3/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:2");
+        turret1 = new Button(worldBatch,"", (int)((( 437/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:1");
+        turret2 = new Button(worldBatch,"", (int)((( 437*3/4 * Zombies.InitialWindowWidth /  Gdx.graphics.getWidth()) *3.5)*Zombies.WorldScale), 0, "Turret lv:2");
         turret1.change();
         turret2.change();
 		
@@ -118,7 +109,6 @@ public class Minigame extends State {
 		
 		//Get objects layer
 		MapObjects objects = map.getLayers().get("Objects").getObjects();
-		//turretList.add(new Turret(this,(int) (723* Zombies.WorldScale),(int)( 819*Zombies.WorldScale) ,"minigame/turret1.png", 15, "bullet.png", 20, Zombies.soundShoot));
 		//Iterate objects
 		for(MapObject object : objects) {
 			
@@ -133,29 +123,16 @@ public class Minigame extends State {
 
 			//Added the object, using the name as an identifier
 			switch(object.getName()) {
-				case "zombie1":
-					
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie1.png", 3, 5));
-				break;
-				
-				case "zombie2":
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie2.png", 5, 15));
-				break;
-				
-				case "zombie3":
-					enemiesList.add(new MinigameZombie(this, x, y, "zombie/zombie3.png", 10, 5));
-				break;
-//				case "turret1":
-//					turretList.add(new Turret(this, x, y,"minigame/turret1.png", 10, "bullet.png", 20, Zombies.soundShoot,500));
-//				break;
 				case "placer":
-                    placeList.add(new Button(worldBatch, "selecter.png",camera, x, y, ""));
+                    placeList.add(new Button(worldBatch, "selecter.png", x, y, ""));
                 break;
+
 				default:
 					System.err.println("Error importing stage: unrecognised object");
 				break;
 			}
 		}
+		
 		for (Button button : placeList)
 			button.change();
 	}
@@ -179,7 +156,6 @@ public class Minigame extends State {
 					
 					x *=  Zombies.WorldScale;
 					y *=  Zombies.WorldScale;
-					
 					
 					Color color;
 					int distance;
@@ -226,18 +202,16 @@ public class Minigame extends State {
 		renderer.setView(camera);
 		renderer.render();
 
-
 		//Render world
 		worldBatch.setProjectionMatrix(camera.combined);
-		worldBatch.begin();							
+		worldBatch.begin();
+		
 		//Draw mobs and game objects
 		turret1.render();
 		turret2.render();
 		
-		
 		for (int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).render();
-		
 		for (Projectile bullet : bulletsList)
 			bullet.render();
 		for (Turret turret : turret1List)
@@ -297,24 +271,6 @@ public class Minigame extends State {
 					break;
 			}
 			
-//			if (play.isHover()) {
-//				Zombies.soundSelect.play();
-//				//Start playing ambient sound
-//				Zombies.soundAmbientWind.loop();
-//				StateManager.loadState(StateID.BRIEFINGSCREEN);
-//			}
-//			else if (credits.isHover()) {
-//				Zombies.soundSelect.play();
-//				StateManager.loadState(StateID.CREDITSMENU);
-//			}
-//			else if (options.isHover()) {
-//				Zombies.soundSelect.play();
-//				StateManager.loadState(StateID.OPTIONSMENU);
-//			}
-//			else if (exit.isHover()) {
-//				//Quit the game
-//				Gdx.app.exit();
-//			}
 		}
 		if((turret1List.size()< count1) && turret1.getHide() ) {
 			turret1.change();
@@ -335,7 +291,21 @@ public class Minigame extends State {
 			waveCount += 1;
 			count1 ++;
 			count2 ++;
-			spawnCount = waveCount * 5;
+			switch (this.path) {
+			case "World_One_Minigame" :
+				spawnCount = waveCount * 1;
+				break;
+			case "World_Two_Minigame" :
+				spawnCount = waveCount * 2;
+				break;
+			case "World_Four_Minigame" :
+				spawnCount = waveCount * 4;
+				break;
+			case "World_Five_Minigame" :
+				spawnCount = waveCount * 5;
+				break;
+			}
+			
 		}
 		
 		spawnZombies();
@@ -354,11 +324,10 @@ public class Minigame extends State {
 			turret.update();
 		for (Turret turret : turret2List)
 			turret.update();
+		
 		//Remove deletion flagged objects
 		Entity.removeDeletionFlagged(enemiesList);
 		Entity.removeDeletionFlagged(bulletsList);
-
-
 
 		//Update Box2D lighting
 		rayHandler.setCombinedMatrix(camera);
@@ -394,34 +363,37 @@ public class Minigame extends State {
 		return enemiesList;
 	}
 	
+	/**
+	 * Method to spawn next zombie if there are more zombies to spawn
+	 * and sets the zombies speed and health
+	 */
 	private void spawnZombies() {
 		
 		if(spawnCount > 0 && spawnDelay == 0) {
 			System.out.println("spawning");
-//			System.out.println(spawnX);
-//			System.out.println(spawnY);
-			if (spawnCount < 14) {
+
+			if (spawnCount < 10) {
 				switch (spawnCount % 3) {
 				case 0 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 2, 5));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", spawnCount + 1, 5));
 					break;
 				case 1 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 2, 10));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", spawnCount + 1, 10));
 					break;
 				case 2 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 2, 15));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", spawnCount + 1, 15));
 					break;
 				}
 			} else {
 				switch (spawnCount % 3) {
 				case 0 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 15, 5));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie1.png", 10, 5));
 					break;
 				case 1 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 15, 10));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie2.png", 10, 10));
 					break;
 				case 2 :
-					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 15, 15));
+					enemiesList.add(new MinigameZombie(this, spawnX, spawnY, "zombie/zombie3.png", 10, 15));
 					break;
 				}	
 			}

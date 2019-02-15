@@ -172,6 +172,7 @@ public class Enemy extends Entity {
 		//Remove enemy if health below zero
 		if(health <= 0) {
 			//Award points to the player based on health when an enemy is killed
+			//Give the player points upon defeating an enemy based on the enemies health 
 			player.gainPoints(10 * health);
 			getInfo().flagForDeletion();
 		}

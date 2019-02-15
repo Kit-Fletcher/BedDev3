@@ -107,6 +107,7 @@ public class Boss1 extends Enemy {
 		armRight.getTexture().dispose();
 		//Load stage 4 screen now this boss has been defeated
 		StateManager.loadState(StateID.STAGE4);
+		StateManager.loadStateEntry0(StateID.STAGE4);
 	}
 		
 	@Override

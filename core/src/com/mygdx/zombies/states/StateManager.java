@@ -51,6 +51,9 @@ public class StateManager {
 		loadState(stateID, -1);
 	}
 	
+	public static void loadStateEntry0(StateID stateID) {
+		loadState(stateID, 0);
+	}
 	/**
 	 * Load the state associated with the given state id and pass the entry id
 	 * @param stateID - the state id to identify the state to load
@@ -110,10 +113,10 @@ public class StateManager {
 				tempState = new Minigame("World_Two_Minigame", 100, 2200, 5, StateID.STAGE2);
 				break;
 			case MINI4:
-				tempState = new Minigame("World_Four_Minigame", 100, 2200, 1, StateID.STAGE4);
+				tempState = new Minigame("World_Four_Minigame", 1000, 2300, 1, StateID.STAGE4);
 				break;
 			case MINI5:
-				tempState = new Minigame("World_Five_Minigame", 100, 2200, 10, StateID.STAGE5);
+				tempState = new Minigame("World_Five_Minigame", 2200, 2200, 10, StateID.STAGE5);
 				break;
 			default:
 				System.err.println("Error: Unrecognised gate destination");

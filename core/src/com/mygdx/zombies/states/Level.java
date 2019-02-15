@@ -157,7 +157,6 @@ public class Level extends State {
 			int width = ((Float) p.get("width")).intValue();
 			int height = ((Float) p.get("height")).intValue();
 			String destination = (String) p.get("Destination");
-			//System.out.println(destination);
 			int entryID = (Integer) p.get("EntryID");
 			
 			//Scale coordinates
@@ -178,8 +177,6 @@ public class Level extends State {
 		
 		//Get objects layer
 		MapObjects objects = map.getLayers().get("Objects").getObjects();
-		
-		
 		
 		//Iterate objects
 		for(MapObject object : objects) {
@@ -252,7 +249,7 @@ public class Level extends State {
 				break;
 				
 				case "boss1":
-					enemiesList.add(new Mike(this, x, y));
+					enemiesList.add(new Boss1(this, x, y));
 				break;
 				
 				case "mike":
@@ -297,7 +294,6 @@ public class Level extends State {
 					
 					x *=  Zombies.WorldScale;
 					y *=  Zombies.WorldScale;
-					
 					
 					Color color;
 					int distance;
@@ -352,12 +348,13 @@ public class Level extends State {
 		renderer.setView(camera);
 		renderer.render();
 
-
 		//Render world
 		worldBatch.setProjectionMatrix(camera.combined);
-		worldBatch.begin();				
+		worldBatch.begin();	
+		
 		//Draw player
-		player.render();			
+		player.render();	
+		
 		//Draw mobs and game objects
 		for (int i = 0; i < enemiesList.size(); i++)
 			enemiesList.get(i).render();

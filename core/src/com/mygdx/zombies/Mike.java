@@ -1,6 +1,5 @@
 package com.mygdx.zombies;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,7 +11,6 @@ import com.mygdx.zombies.states.StateManager.StateID;
 
 public class Mike extends Enemy {
 
-	
 	private Sprite armLeft;
 	private Sprite armRight;
 	private SpriteBatch spriteBatch;
@@ -47,6 +45,8 @@ public class Mike extends Enemy {
 	public void update(boolean inLights) {
 		super.update(inLights);
 		
+		time ++;
+		
 		//Looping hand animation timer 
 		attackStep+=3;
 		if(attackStep > 100)
@@ -56,10 +56,8 @@ public class Mike extends Enemy {
 		time ++;
 		if(time == 1) {
 			setImmunity(true);
-			System.out.println("Immunity set to true");
 		} else if(time == 100) {
 			setImmunity(false);
-			System.out.println("Immunity set to false");
 		} else if(time == 200) {
 			time = 0;
 		}
@@ -118,7 +116,6 @@ public class Mike extends Enemy {
 			setNoiseTimer(Zombies.random.nextInt(1000) + 500);
 			//Play a random sound, adjusting volume based on distance to player
 			Zombies.soundMike.play(getDistanceToPlayer() < 500 ? 500-(float)getDistanceToPlayer() : 0);
-			
 		}
 	}
 	

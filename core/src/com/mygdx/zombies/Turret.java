@@ -8,29 +8,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.zombies.items.Projectile;
-import com.mygdx.zombies.items.RangedWeapon;
-import com.mygdx.zombies.states.Level;
 import com.mygdx.zombies.states.Minigame;
 
 public class Turret extends Entity{
 
-	
 	private float range;
 	private Sprite sprite;
-	private double angleRadians;
 	private double angleDegrees;
 	private double angleToZombieRadians;
 	private ArrayList<MinigameZombie> enemiesList;
 	private SpriteBatch spriteBatch;	
-	private boolean inLights;
 	private Minigame level;
-	private double distanceToZombie;
-	private RangedWeapon gun;
 	private boolean shoot = true;
 	protected static boolean firing;
 	private String projectilePath;
@@ -53,12 +45,14 @@ public class Turret extends Entity{
 		//Add sprite
 		spriteBatch = level.getWorldBatch();
 		sprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
+		
 		//initialise turret values
 		this.range = range;
 		this.projectilePath= projectileSpritePath;
 		this.shootDelay = shootDelay;
 		this.bulletSpeed = bulletSpeed;
 		this.sound =shootSound;
+		
 		//Add box2d body
 		FixtureDef fixtureDef = new FixtureDef() {
 			{
@@ -78,15 +72,13 @@ public class Turret extends Entity{
 		this.level = level;
 		this.enemiesList = level.getEnemiesList();
 		
-		
-		//Initialise timer values
-		//Initialise variable which affects speed depending on alert status
 		sprite.setRotation((float) angleDegrees);		
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 		
 	}
 	
 	public void update() {
+		//Checks there are zombies to shoot
 		if(enemiesList!=null) {
 			MinigameZombie zombie = getClosestZombie();
 			
@@ -97,6 +89,8 @@ public class Turret extends Entity{
 			this.use(this);
 			sprite.setRotation((float) angleDegrees);
 		}
+		
+		//Adds to the timer so shotting can be delayed
 		if(timerTicks > 0)
 			timerTicks++;
 		if(timerTicks >= shootDelay) {
@@ -106,6 +100,10 @@ public class Turret extends Entity{
 		sprite.setPosition(getPositionX() - sprite.getWidth() / 2, getPositionY() - sprite.getHeight() / 2);
 	}
 	
+	/**
+	 * Finds the closest zombie to the turret
+	 * @return closestZombie - the closest minigameZombie to the turret
+	 */
 	private MinigameZombie getClosestZombie() {
 		MinigameZombie closestZombie = null;
 		double distance = 0;
@@ -117,18 +115,22 @@ public class Turret extends Entity{
 				distance = newDistance;
 				closestZombie = enemiesList.get(i);
 			}else if(Math.abs(newDistance)<Math.abs(distance)) {
+				// updates the closest zombie from those checked
 				closestZombie = enemiesList.get(i);
 			}
 		}
 		if(distance < range) {
-			
-			distanceToZombie = distance;
 			return closestZombie;
 		}
 	
 		return null;
 	}
 	
+	/**
+	 * Calculates the angle to the closest zombie accounting for speed
+	 * @param zombie - MinigameZombie which is the closest to the turret
+	 * @return angleToZombieRadians - the angle to the zombie
+	 */
 	private double getAngleToZombie(MinigameZombie zombie) {
 		if(zombie != null) {
 			shoot = true;
@@ -136,7 +138,6 @@ public class Turret extends Entity{
 				new Vector2(zombie.getPositionX(), zombie.getPositionY()));
 			distance = Math.abs(1/Math.cos(Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(zombie.getPositionX() , zombie.getPositionY() ))));
-			//System.out.println(distance);
 			float offset = 400/bulletSpeed;
 			return Zombies.angleBetweenRads(new Vector2(getPositionX(), getPositionY()),
 				new Vector2(zombie.getPositionX() + offset* (float)distance * zombie.getVelocity().x, zombie.getPositionY() + offset *  (float) distance * zombie.getVelocity().y ));
@@ -176,6 +177,7 @@ public class Turret extends Entity{
 	public void use(Turret turret) {
 		if(timerTicks == 0 & shoot) {
 			timerTicks++;
+			// add projectile to the current level
 			level.getBulletsList().add(new Projectile(level.getWorldBatch(),level.getBox2dWorld(), (int)turret.getPositionX(), (int)turret.getPositionY(),
 					(float)(turret.getAngleRadians() + Math.PI ), projectilePath, bulletSpeed));
 			firing = true;
